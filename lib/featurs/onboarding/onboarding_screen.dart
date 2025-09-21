@@ -48,9 +48,11 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     void submit() {
       cacheHelper.SaveData(key: 'onBoarding', value: true).then(
         (value) {
-          onBoarding = cacheHelper.getData('onBoarding');
-          Navigator.pushNamedAndRemoveUntil(
-              context, Routes.homeRoute, (route) => false);
+          if (mounted) {
+            onBoarding = cacheHelper.getData('onBoarding');
+            Navigator.pushNamedAndRemoveUntil(
+                context, Routes.homeRoute, (route) => false);
+          }
         },
       );
     }
