@@ -1,0 +1,11 @@
+bool? lang;
+bool? isArabic = false;
+String? userID;
+String? token;
+String? name;
+String? username;
+String? phone;
+String? image;
+String? userEmail;
+bool? isAdmin;
+bool onBoarding = false;
