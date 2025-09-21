@@ -1,17 +1,7 @@
-import 'dart:developer';
-
-import 'package:dr_sami/featurs/auth/login_first.dart';
-import 'package:dr_sami/featurs/eula/eula.dart';
-import 'package:dr_sami/featurs/home_screen/baners/add_banner.dart';
 import 'package:dr_sami/core/extensions/media_values.dart';
 import 'package:dr_sami/core/theme/Colors/coluors.dart';
 import 'package:dr_sami/core/config/config.dart';
 import 'package:dr_sami/core/theme/text_styles/text_styeles.dart';
-import 'package:dr_sami/featurs/auth/login/login.dart';
-import 'package:dr_sami/featurs/custom_drawer/widgets/custom_listtile.dart';
-import 'package:dr_sami/featurs/home_screen/opinions/create_opinion_form.dart';
-import 'package:dr_sami/featurs/home_screen/requset_meet/user_requests.dart';
-import 'package:dr_sami/featurs/home_screen/teams/add_member.dart';
 import 'package:dr_sami/routes/routes.dart';
 import 'package:easy_localization/easy_localization.dart';
 
@@ -27,13 +17,13 @@ import '../../network/local/cache_helper.dart';
 import '../auth/admin/add_admin.dart';
 import '../auth/profile/cubit/profile_cubit.dart';
 import '../auth/profile/widget/delete_confirm.dart';
-import '../home_screen/home_screen.dart';
-import '../home_screen/requset_meet/all_request.dart';
 import '../home_screen/requset_meet/cubit/meeting_cubit.dart';
-import '../home_screen/requset_meet/requst_meet.dart';
 import '../home_screen/requset_meet/widgets/button.dart';
+import '../home_screen/teams/add_member.dart';
 import '../home_screen/widgets/condition.dart';
 import 'widgets/profile_image.dart';
+import 'widgets/navigation_group.dart';
+import 'widgets/navigation_item.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({super.key});
@@ -47,316 +37,395 @@ class CustomDrawer extends StatelessWidget {
         child: BlocConsumer<LocalizationCubit, LocalizationState>(
           listener: (context, state) {},
           builder: (context, state) {
-            // context.read<LocalizationCubit>().changeLanguage(isArabic!);
             return Column(
               children: [
-                image != null
-                    ? Stack(
-                        children: [
-                          const ProfileImage(),
-                          Positioned(
-                            bottom: 15.h,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SizedBox(
-                                  width: context.width,
-                                ),
-                                BlocProvider(
-                                  create: (context) => UserProfileCubit(),
-                                  child: BlocConsumer<UserProfileCubit,
-                                      userProfileState>(
-                                    listener: (context, state) {
-                                      if (state is GetProfilesuccess) {
-                                        Navigator.pushReplacementNamed(
-                                            context, Routes.updateProfileRoute);
-                                      }
-                                    },
-                                    builder: (context, state) {
-                                      return ConditionBuilder(
-                                        condition: state is GetProfileLoading,
-                                        ifFalse: SizedBox(
-                                          width: 200.w,
-                                          child: SmallButton(
-                                            condition: false,
-                                            color: Colours.White,
-                                            text: config
-                                                .localization['updateprofile'],
-                                            fontColor: Colours.DarkBlue,
-                                            fun: () async {
-                                              context
-                                                  .read<UserProfileCubit>()
-                                                  .getUserInfo();
-                                            },
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      )
-                    : Container(
-                        width: context.width,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.vertical(
-                              bottom: Radius.circular(50.r)),
-                          color: Colours.DarkBlue,
-                          image: const DecorationImage(
-                            image: AssetImage('assets/images/pngegg.png'),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        child: Stack(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 15.w, vertical: 15.h),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  IconButton(
-                                    onPressed: () {
-                                      Navigator.pushReplacement(
-                                        context,
-                                        createRoute(const HomeScreen(), false),
-                                      );
-                                    },
-                                    icon: Icon(
-                                      IconlyBroken.close_square,
-                                      // Icons.close_outlined,
-                                      color: Colours.White,
-                                      size: 22.h,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                SizedBox(
-                                  height: 30.h,
-                                  width: context.width,
-                                ),
-                                Image.asset(
-                                  'assets/images/account.png',
-                                  fit: BoxFit.contain,
-                                  width: 155.w,
-                                  height: 155.w,
-                                  color: Colours.White,
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pushNamed(
-                                        context, Routes.loginRoute);
-                                  },
-                                  child: Text(
-                                    config.localization['login'],
-                                    style: TextStyles.white20blod,
-                                  ),
-                                ),
-                                SizedBox(height: 20.h),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
+                _buildHeader(context),
                 Expanded(
-                  child: ListView(
-                    children: [
-                      CustomListTile(
-                          label: config.localization['home'],
-                          icon: IconlyBold.home,
-                          widget: const HomeScreen(),
-                          Context: context,
-                          functinon: () {},
-                          topDivider: false),
-                      CustomListTile(
-                          label: config.localization['requestMeeting'],
-                          icon: IconlyBold.video,
-                          widget: userID != null
-                              ? const RequstMeet()
-                              : const LoginFirst(),
-                          Context: context,
-                          functinon: () {},
-                          topDivider: true),
-
-                      CustomListTile(
-                        label: config.localization[
-                            'lang'], // Accessing localization text
-                        icon: Icons.language,
-
-                        Context: context,
-                        functinon: () {
-                          isArabic =
-                              !(isArabic ?? false); // Handle nulls safely
-
-                          context
-                              .read<LocalizationCubit>()
-                              .changeLanguage(isArabic!);
-                          debugPrint(cacheHelper.getData('lang').toString());
-                          if (isArabic!) {
-                            context.setLocale(const Locale('ar'));
-                          } else {
-                            context.setLocale(const Locale('en'));
-                          }
-                        },
-                      ),
-
-                      CustomListTile(
-                        label: config.localization['addOPinion'],
-                        icon: IconlyBold.plus,
-                        widget: userID != null
-                            ? const AddOpinion()
-                            : const LoginFirst(),
-                        Context: context,
-                        functinon: () {},
-                      ),
-                      BlocProvider(
-                        create: (context) => MeetingCubit(),
-                        child: CustomListTile(
-                          label: config.localization['userequests'],
-                          icon: IconlyBold.category,
-                          widget: userID != null
-                              ? const UserRequests()
-                              : const LoginFirst(),
-                          Context: context,
-                          functinon: () async {
-                            await context.read<MeetingCubit>().convertCurancy();
-                          },
-                        ),
-                      ),
-
-                      userID == null
-                          ? Column(
-                              children: [
-                                CustomListTile(
-                                  label: config.localization['login'],
-                                  icon: IconlyBold.login,
-                                  widget: const LoginPage(),
-                                  Context: context,
-                                  functinon: () {},
-                                ),
-                                CustomListTile(
-                                  label: config.localization['register'],
-                                  icon: IconlyBold.login,
-                                  widget: const Eula(),
-                                  Context: context,
-                                  functinon: () {},
-                                ),
-                              ],
-                            )
-                          : Container(),
-                      // BlocProvider(
-                      //   create: (context) => LocalizationCubit(),
-                      //   child:
-                      //       BlocConsumer<LocalizationCubit, LocalizationState>(
-                      //     listener: (context, state) {},
-                      //     builder: (context, state) {
-                      //       return CustomListTile(
-                      //         label: config.localization[
-                      //             'lang'], // Accessing localization text
-                      //         icon: Icons.language,
-                      //
-                      //         Context: context,
-                      //         functinon: () {
-                      //           isArabic =
-                      //               !(isArabic ?? false); // Handle nulls safely
-                      //
-                      //           context
-                      //               .read<LocalizationCubit>()
-                      //               .changeLanguage(isArabic!);
-                      //           debugPrint(cacheHelper.getData('lang'));
-                      //         },
-                      //       );
-                      //     },
-                      //   ),
-                      // ),
-
-                      isAdmin!
-                          ? Column(
-                              children: [
-                                CustomListTile(
-                                  label: config.localization['addadmin'],
-                                  icon: IconlyLight.add_user,
-                                  widget: const AddAdmin(),
-                                  Context: context,
-                                  functinon: () {},
-                                ),
-                                CustomListTile(
-                                  label: config.localization['addBanner'],
-                                  icon: IconlyBold.plus,
-                                  widget: const AddBanner(),
-                                  Context: context,
-                                  functinon: () {},
-                                ),
-                                CustomListTile(
-                                  label: config.localization['addMember'],
-                                  icon: IconlyBold.plus,
-                                  widget: const AddMember(),
-                                  Context: context,
-                                  functinon: () {},
-                                ),
-                                BlocProvider(
-                                  create: (context) => MeetingCubit(),
-                                  child:
-                                      BlocBuilder<MeetingCubit, MeetingState>(
-                                    builder: (context, state) {
-                                      return CustomListTile(
-                                        label:
-                                            config.localization['adminrequset'],
-                                        icon: IconlyBold.category,
-                                        widget: const AllReuests(),
-                                        Context: context,
-                                        functinon: () async {
-                                          log('message');
-                                          await context
-                                              .read<MeetingCubit>()
-                                              .convertCurancy();
-                                        },
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ],
-                            )
-                          : Container(),
-                      userID != null
-                          ? Column(
-                              children: [
-                                CustomListTile(
-                                  label: config.localization['signout'],
-                                  icon: IconlyBold.logout,
-                                  // widget: CustomDrawer(),
-                                  Context: context,
-                                  functinon: () {
-                                    context.read<LocalizationCubit>().logOut();
-                                  },
-                                ),
-                                CustomListTile(
-                                  label: config.localization['deleteAccount'],
-                                  icon: IconlyBold.delete,
-                                  // widget: CustomDrawer(),
-                                  Context: context,
-                                  functinon: () {
-                                    ConfirmaitionDialog(context);
-                                  },
-                                ),
-                              ],
-                            )
-                          : Container(),
-                    ],
-                  ),
+                  child: _buildNavigationContent(context),
                 ),
               ],
             );
           },
         ),
       ),
+    );
+  }
+
+  Widget _buildHeader(BuildContext context) {
+    return image != null
+        ? Container(
+            width: context.width,
+            decoration: BoxDecoration(
+              borderRadius:
+                  BorderRadius.vertical(bottom: Radius.circular(50.r)),
+              color: Colours.DarkBlue,
+              image: const DecorationImage(
+                image: AssetImage('assets/images/pngegg.png'),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Header with close button
+                Container(
+                  padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).padding.top + 10.h,
+                    left: 16.w,
+                    right: 16.w,
+                    bottom: 10.h,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // App logo or title
+                      Text(
+                        config.localization['App Name'] ?? 'Amna',
+                        style: TextStyles.white20blod.copyWith(
+                          fontSize: 18.sp,
+                        ),
+                      ),
+                      // Close button
+                      GestureDetector(
+                        onTap: () => Navigator.pop(context),
+                        child: Container(
+                          padding: EdgeInsets.all(8.w),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withValues(alpha: 0.2),
+                            borderRadius: BorderRadius.circular(20.r),
+                          ),
+                          child: Icon(
+                            Icons.close,
+                            color: Colours.White,
+                            size: 20.h,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                // Profile content
+                Flexible(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const ProfileImage(),
+                      SizedBox(height: 16.h),
+                      BlocProvider(
+                        create: (context) => UserProfileCubit(),
+                        child: BlocConsumer<UserProfileCubit, userProfileState>(
+                          listener: (context, state) {
+                            if (state is GetProfilesuccess) {
+                              Navigator.pushReplacementNamed(
+                                  context, Routes.updateProfileRoute);
+                            }
+                          },
+                          builder: (context, state) {
+                            return ConditionBuilder(
+                              condition: state is GetProfileLoading,
+                              ifFalse: Container(
+                                margin: EdgeInsets.symmetric(horizontal: 20.w),
+                                child: SmallButton(
+                                  condition: false,
+                                  color: Colours.White,
+                                  text: config.localization['updateprofile'],
+                                  fontColor: Colours.DarkBlue,
+                                  fun: () async {
+                                    context
+                                        .read<UserProfileCubit>()
+                                        .getUserInfo();
+                                  },
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      SizedBox(height: 20.h),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          )
+        : Container(
+            width: context.width,
+            decoration: BoxDecoration(
+              borderRadius:
+                  BorderRadius.vertical(bottom: Radius.circular(50.r)),
+              color: Colours.DarkBlue,
+              image: const DecorationImage(
+                image: AssetImage('assets/images/pngegg.png'),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Header with close button
+                Container(
+                  padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).padding.top + 10.h,
+                    left: 16.w,
+                    right: 16.w,
+                    bottom: 10.h,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // App logo or title
+                      Text(
+                        config.localization['App Name'] ?? 'Amna',
+                        style: TextStyles.white20blod.copyWith(
+                          fontSize: 18.sp,
+                        ),
+                      ),
+                      // Close button
+                      GestureDetector(
+                        onTap: () => Navigator.pop(context),
+                        child: Container(
+                          padding: EdgeInsets.all(8.w),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withValues(alpha: 0.2),
+                            borderRadius: BorderRadius.circular(20.r),
+                          ),
+                          child: Icon(
+                            Icons.close,
+                            color: Colours.White,
+                            size: 20.h,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                // Content
+                Flexible(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'assets/images/account.png',
+                        fit: BoxFit.contain,
+                        width: 120.w,
+                        height: 120.w,
+                        color: Colours.White,
+                      ),
+                      SizedBox(height: 16.h),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, Routes.loginRoute);
+                          Navigator.pop(context);
+                        },
+                        style: TextButton.styleFrom(
+                          backgroundColor: Colors.white.withValues(alpha: 0.2),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 24.w,
+                            vertical: 12.h,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25.r),
+                          ),
+                        ),
+                        child: Text(
+                          config.localization['login'],
+                          style: TextStyles.white20blod.copyWith(
+                            fontSize: 16.sp,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 20.h),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+  }
+
+  Widget _buildNavigationContent(BuildContext context) {
+    return ListView.builder(
+      physics: const ClampingScrollPhysics(),
+      itemCount: 1,
+      itemBuilder: (context, index) {
+        return Column(
+          children: [
+            // Main Navigation Group
+            NavigationGroup(
+              title: config.localization['main'],
+              items: [
+                NavigationItem(
+                  label: config.localization['home'],
+                  icon: IconlyBold.home,
+                  route: Routes.homeRoute,
+                  isSelected:
+                      ModalRoute.of(context)?.settings.name == Routes.homeRoute,
+                ),
+              ],
+            ),
+
+            // Features Group
+            NavigationGroup(
+              title: config.localization['features'],
+              items: [
+                NavigationItem(
+                  label: config.localization['requestMeeting'],
+                  icon: IconlyBold.video,
+                  onTap: () {
+                    if (userID != null) {
+                      Navigator.pushNamed(context, Routes.requsetMeatRoute);
+                    } else {
+                      Navigator.pushNamed(context, Routes.loginFirstRoute);
+                    }
+                  },
+                ),
+                NavigationItem(
+                  label: config.localization['addOPinion'],
+                  icon: IconlyBold.plus,
+                  onTap: () {
+                    if (userID != null) {
+                      Navigator.pushNamed(context, Routes.addOpinionRoute);
+                    } else {
+                      Navigator.pushNamed(context, Routes.loginFirstRoute);
+                    }
+                  },
+                ),
+                NavigationItem(
+                  label: config.localization['userequests'],
+                  icon: IconlyBold.category,
+                  onTap: () async {
+                    if (userID != null) {
+                      final meetingCubit = MeetingCubit();
+                      await meetingCubit.convertCurancy();
+                      if (context.mounted) {
+                        Navigator.pushNamed(
+                            context, Routes.userRequestsMeetRoute);
+                        Navigator.pop(context); // Close drawer
+                      }
+                    } else {
+                      Navigator.pushNamed(context, Routes.loginFirstRoute);
+                      Navigator.pop(context); // Close drawer
+                    }
+                  },
+                ),
+              ],
+            ),
+
+            // Settings Group
+            NavigationGroup(
+              title: config.localization['settings'],
+              items: [
+                NavigationItem(
+                  label: config.localization['lang'],
+                  icon: Icons.language,
+                  onTap: () {
+                    isArabic = !(isArabic ?? false);
+                    context.read<LocalizationCubit>().changeLanguage(isArabic!);
+                    debugPrint(cacheHelper.getData('lang').toString());
+                    if (isArabic!) {
+                      context.setLocale(const Locale('ar'));
+                    } else {
+                      context.setLocale(const Locale('en'));
+                    }
+                  },
+                ),
+              ],
+            ),
+
+            // Account Group
+            if (userID == null)
+              NavigationGroup(
+                title: config.localization['account'],
+                items: [
+                  NavigationItem(
+                    label: config.localization['login'],
+                    icon: IconlyBold.login,
+                    onTap: () {
+                      Navigator.pushNamed(context, Routes.loginRoute);
+                    },
+                  ),
+                  NavigationItem(
+                    label: config.localization['register'],
+                    icon: IconlyBold.login,
+                    onTap: () {
+                      Navigator.pushNamed(context, Routes.eulaRoute);
+                    },
+                  ),
+                ],
+              ),
+
+            // Admin Group
+            if (isAdmin!)
+              NavigationGroup(
+                title: config.localization['admin'],
+                items: [
+                  NavigationItem(
+                    label: config.localization['addadmin'],
+                    icon: IconlyLight.add_user,
+                    onTap: () {
+                      Navigator.pushReplacement(
+                        context,
+                        createRoute(const AddAdmin(), true),
+                      );
+                    },
+                  ),
+                  NavigationItem(
+                    label: config.localization['addBanner'],
+                    icon: IconlyBold.plus,
+                    onTap: () {
+                      Navigator.pushNamed(context, Routes.addBannedRoute);
+                    },
+                  ),
+                  NavigationItem(
+                    label: config.localization['addMember'],
+                    icon: IconlyBold.plus,
+                    onTap: () {
+                      Navigator.pushReplacement(
+                        context,
+                        createRoute(const AddMember(), true),
+                      );
+                    },
+                  ),
+                  NavigationItem(
+                    label: config.localization['adminrequset'],
+                    icon: IconlyBold.category,
+                    onTap: () async {
+                      final meetingCubit = MeetingCubit();
+                      await meetingCubit.convertCurancy();
+                      if (context.mounted) {
+                        Navigator.pushNamed(
+                            context, Routes.allRequestsMeetRoute);
+                        Navigator.pop(context); // Close drawer
+                      }
+                    },
+                  ),
+                ],
+              ),
+
+            // User Actions Group
+            if (userID != null)
+              NavigationGroup(
+                title: config.localization['actions'],
+                items: [
+                  NavigationItem(
+                    label: config.localization['signout'],
+                    icon: IconlyBold.logout,
+                    onTap: () {
+                      context.read<LocalizationCubit>().logOut();
+                    },
+                  ),
+                  NavigationItem(
+                    label: config.localization['deleteAccount'],
+                    icon: IconlyBold.delete,
+                    onTap: () {
+                      ConfirmaitionDialog(context);
+                    },
+                  ),
+                ],
+              ),
+          ],
+        );
+      },
     );
   }
 }
