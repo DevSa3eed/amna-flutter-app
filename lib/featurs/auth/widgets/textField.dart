@@ -49,7 +49,8 @@ class _CustomTextFeildState extends State<CustomTextFeild> {
       child: TextFormField(
         validator: (value) {
           if (value == null || value.isEmpty) {
-            return config.localization['empty'];
+            return config.localization['empty'] ??
+                'This field mustn\'t be empty';
           }
           return null; // Input is valid
         },
@@ -133,7 +134,7 @@ class _CustomTextFeildState extends State<CustomTextFeild> {
           fontSize: 20.sp,
         ),
         onTap: () {
-          widget.fun!();
+          widget.fun?.call();
         },
       ),
     );
