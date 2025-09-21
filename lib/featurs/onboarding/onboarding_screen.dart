@@ -49,8 +49,10 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       await cacheHelper.SaveData(key: 'onBoarding', value: true);
       if (mounted) {
         onBoarding = cacheHelper.getData('onBoarding');
-        Navigator.pushNamedAndRemoveUntil(
-            context, Routes.homeRoute, (route) => false);
+        if (mounted) {
+          Navigator.pushNamedAndRemoveUntil(
+              context, Routes.homeRoute, (route) => false);
+        }
       }
     }
 
@@ -96,10 +98,12 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 }
               },
               controller: pageindex,
+              physics: const ClampingScrollPhysics(),
               itemBuilder: (context, index) {
                 return Padding(
                   padding: EdgeInsets.all(10.0.w),
                   child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       Image(
                         image: AssetImage(
@@ -115,7 +119,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                         style: TextStyles.lightBlue24blod,
                         textAlign: TextAlign.center,
                       ),
-                      Expanded(
+                      Flexible(
                         child: Padding(
                           padding: EdgeInsets.all(8.0.h),
                           child: Center(
