@@ -57,15 +57,18 @@ class AppRouter {
 
       default:
         return MaterialPageRoute(
-            builder: (context) => Scaffold(
-                  appBar: AppBar(),
-                  body: Center(
-                    child: Text(
-                      'No route define for ${settings.name}',
-                      style: const TextStyle(color: Colors.black),
-                    ),
-                  ),
-                ));
+          builder: (context) => Scaffold(
+            appBar: AppBar(
+              title: const Text('Route Not Found'),
+            ),
+            body: Center(
+              child: Text(
+                'No route defined for ${settings.name}',
+                style: const TextStyle(color: Colors.black),
+              ),
+            ),
+          ),
+        );
     }
   }
 }
