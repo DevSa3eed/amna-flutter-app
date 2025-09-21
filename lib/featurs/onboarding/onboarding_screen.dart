@@ -45,16 +45,13 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       ),
     ];
 
-    void submit() {
-      cacheHelper.SaveData(key: 'onBoarding', value: true).then(
-        (value) {
-          if (mounted) {
-            onBoarding = cacheHelper.getData('onBoarding');
-            Navigator.pushNamedAndRemoveUntil(
-                context, Routes.homeRoute, (route) => false);
-          }
-        },
-      );
+    Future<void> submit() async {
+      await cacheHelper.SaveData(key: 'onBoarding', value: true);
+      if (mounted) {
+        onBoarding = cacheHelper.getData('onBoarding');
+        Navigator.pushNamedAndRemoveUntil(
+            context, Routes.homeRoute, (route) => false);
+      }
     }
 
     return Scaffold(
@@ -67,12 +64,12 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
         actions: [
           cacheHelper.getData('onBoarding') == null
               ? TextButton(
-                  onPressed: () {
+                  onPressed: () async {
                     setState(() {
                       pindex = 0;
                       isLast = false;
                     });
-                    submit();
+                    await submit();
                   },
                   child: Text(
                     config.localization['skip'],
@@ -138,13 +135,13 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             ),
           ),
           CustomBotton(
-              navigate_fun: () {
+              navigate_fun: () async {
                 if (isLast) {
                   setState(() {
-                    submit();
                     pindex = 0;
                     isLast = false;
                   });
+                  await submit();
                 } else {
                   pageindex.nextPage(
                     duration: const Duration(milliseconds: 300),
