@@ -47,7 +47,7 @@ class PendingRequst extends StatelessWidget {
           // return cubit.pendingList.isEmpty
           return state is GetRequestsLoading
               ? Skeletonizer(
-                  containersColor: Colors.grey.withOpacity(.02),
+                  containersColor: Colors.grey.withValues(alpha: .02),
                   child: RequestCard(
                     index: 1,
                     model: meetingRequest,

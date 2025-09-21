@@ -160,7 +160,7 @@ class BannersCubit extends Cubit<BannersState> {
 
   //======================>> Get All Banner <<======================\\
   Banners? bannerModel;
-  List? listOfBanners = [];
+  List<Banners>? listOfBanners = [];
   Future getAllBanners() async {
     emit(GetBannersLoading());
     await dio

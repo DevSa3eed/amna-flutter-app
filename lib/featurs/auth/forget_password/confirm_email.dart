@@ -8,7 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/config/config.dart';
-import '../widgets/custom_Button.dart';
+import '../widgets/custom_button.dart';
 import '../widgets/textField.dart';
 
 class ConfirmEmail extends StatelessWidget {

@@ -43,7 +43,7 @@ class Clinics extends StatelessWidget {
                   width: context.width,
                   height: context.height * .3,
                   decoration: BoxDecoration(
-                    color: Colours.DarkBlue.withOpacity(.7),
+                    color: Colours.DarkBlue.withValues(alpha: .7),
                     borderRadius: BorderRadius.circular(20.r),
                   ),
                 ),

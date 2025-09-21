@@ -9,7 +9,7 @@ import '../../core/theme/Colors/coluors.dart';
 import '../../core/theme/text_styles/text_styeles.dart';
 import '../../network/local/cache_helper.dart';
 import '../../routes/routes.dart';
-import '../auth/widgets/custom_Button.dart';
+import '../auth/widgets/custom_button.dart';
 import 'model/onboarding_model.dart';
 
 class OnBoardingScreen extends StatefulWidget {
@@ -59,7 +59,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       backgroundColor: Colours.White,
       appBar: AppBar(
         backgroundColor: Colours.White,
-        iconTheme: IconThemeData(
+        iconTheme: const IconThemeData(
           color: Colors.black,
         ),
         actions: [
@@ -145,8 +145,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   });
                 } else {
                   pageindex.nextPage(
-                    duration: const Duration(milliseconds: 800),
-                    curve: Curves.linear,
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
                   );
                 }
               },

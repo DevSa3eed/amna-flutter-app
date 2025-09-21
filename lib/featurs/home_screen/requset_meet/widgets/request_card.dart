@@ -34,6 +34,14 @@ class RequestCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final TextEditingController textController = TextEditingController();
 
+    // Check if MeetingCubit is available in the context
+    try {
+      context.read<MeetingCubit>();
+    } catch (e) {
+      // If MeetingCubit is not available, return a simple card without BLoC functionality
+      return _buildSimpleCard(context, textController);
+    }
+
     return BlocConsumer<MeetingCubit, MeetingState>(
       listener: (context, state) async {
         if (state is DeleteRequestsSuccess) {
@@ -72,11 +80,11 @@ class RequestCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20.r),
                 border: Border.all(
                   // color: Colours.LightBlue,
-                  color: Colors.black.withOpacity(.07),
+                  color: Colors.black.withValues(alpha: .07),
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.25), // Shadow color
+                    color: Colors.black.withValues(alpha: 0.25), // Shadow color
                     spreadRadius: 1, // How much the shadow spreads
                     blurRadius: 5, // How blurry the shadow is
                     offset: const Offset(5, 5), // Offset of the shadow (x, y)
@@ -536,6 +544,59 @@ class RequestCard extends StatelessWidget {
           ],
         );
       },
+    );
+  }
+
+  // Simple card without BLoC functionality when MeetingCubit is not available
+  Widget _buildSimpleCard(
+      BuildContext context, TextEditingController textController) {
+    return Container(
+      margin: EdgeInsets.all(10.w),
+      width: double.infinity,
+      padding: EdgeInsets.all(20.w),
+      decoration: BoxDecoration(
+        color: Colours.White,
+        borderRadius: BorderRadius.circular(20.r),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withValues(alpha: 0.2),
+            spreadRadius: 1,
+            blurRadius: 5,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            model.titel ?? 'No Title',
+            style: TextStyles.lightBlue20blod,
+          ),
+          SizedBox(height: 10.h),
+          Text(
+            model.description ?? 'No Description',
+            style: TextStyles.lightBlue16blod,
+          ),
+          SizedBox(height: 10.h),
+          if (model.user != null) ...[
+            Text(
+              'User: ${model.user!.fullName ?? 'Unknown'}',
+              style: TextStyles.lightBlue16blod,
+            ),
+            SizedBox(height: 5.h),
+            Text(
+              'Phone: ${model.user!.phoneNumber ?? 'N/A'}',
+              style: TextStyles.lightBlue16blod,
+            ),
+          ],
+          SizedBox(height: 10.h),
+          Text(
+            'Price: \$${model.price?.toString() ?? 'N/A'}',
+            style: TextStyles.lightBlue16blod,
+          ),
+        ],
+      ),
     );
   }
 }

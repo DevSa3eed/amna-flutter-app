@@ -23,7 +23,7 @@ class MeetingRequest {
     isApproved = json['isApproved'];
     payment = json['payment'];
     price = json['price'];
-    user = json['user'] != null ? new User.fromJson(json['user']) : null;
+    user = json['user'] != null ? User.fromJson(json['user']) : null;
   }
 
   Map<String, dynamic> toJson() {

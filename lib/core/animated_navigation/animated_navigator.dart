@@ -8,7 +8,7 @@ Route createRoute(Widget nextScreen, bool? open) {
           ? const Offset(-1.0, -1.0)
           : const Offset(1.0, 1.0); // Start position (right side of screen)
       const end = Offset.zero; // End position (center of the screen)
-      const curve = Curves.decelerate;
+      const curve = Curves.easeInOut;
 
       var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
       var offsetAnimation = animation.drive(tween);
@@ -18,6 +18,6 @@ Route createRoute(Widget nextScreen, bool? open) {
         child: child,
       );
     },
-    transitionDuration: const Duration(milliseconds: 500),
+    transitionDuration: const Duration(milliseconds: 250),
   );
 }

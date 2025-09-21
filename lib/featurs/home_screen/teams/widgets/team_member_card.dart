@@ -37,7 +37,7 @@ class TeamCard extends StatelessWidget {
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.15),
+                  color: Colors.black.withValues(alpha: 0.15),
                   blurRadius: 15.r,
                   offset: Offset(0, 10.h),
                 ),
@@ -54,7 +54,7 @@ class TeamCard extends StatelessWidget {
                     border: Border.all(color: Colors.white, width: 3.w),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.2),
+                        color: Colors.black.withValues(alpha: 0.2),
                         blurRadius: 10.r,
                         offset: Offset(0, 5.h),
                       ),

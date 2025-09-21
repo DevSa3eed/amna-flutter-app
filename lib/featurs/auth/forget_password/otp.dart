@@ -9,7 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pinput/pinput.dart';
 
 import '../../../core/config/config.dart';
-import '../widgets/custom_Button.dart';
+import '../widgets/custom_button.dart';
 
 class Otp extends StatelessWidget {
   const Otp({super.key});

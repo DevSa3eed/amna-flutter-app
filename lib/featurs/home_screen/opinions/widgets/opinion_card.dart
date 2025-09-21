@@ -1,19 +1,17 @@
-// ignore_for_file: must_be_immutable
-
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dr_sami/constants/api_constants/api_constant.dart';
-import 'package:dr_sami/core/constant_widgets/toast.dart';
-import 'package:dr_sami/core/theme/Colors/coluors.dart';
-import 'package:dr_sami/featurs/home_screen/opinions/Edit_opinion.dart';
-import 'package:dr_sami/featurs/home_screen/opinions/cubit/opinions_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../constants/cached_constants/cached_constants.dart';
-import '../../../../core/constant_widgets/circle_progress.dart';
-import '../../../../core/theme/text_styles/text_styeles.dart';
-import '../../../auth/profile/cubit/profile_cubit.dart';
+import 'package:dr_sami/constants/api_constants/api_constant.dart';
+import 'package:dr_sami/constants/cached_constants/cached_constants.dart';
+import 'package:dr_sami/core/constant_widgets/circle_progress.dart';
+import 'package:dr_sami/core/constant_widgets/toast.dart';
+import 'package:dr_sami/core/theme/Colors/coluors.dart';
+import 'package:dr_sami/core/theme/text_styles/text_styeles.dart';
+import 'package:dr_sami/featurs/auth/profile/cubit/profile_cubit.dart';
+import 'package:dr_sami/featurs/home_screen/opinions/edit_opinion.dart';
+import 'package:dr_sami/featurs/home_screen/opinions/cubit/opinions_cubit.dart';
 import '../model/opinion_model.dart';
 
 class CustomerOpinions extends StatefulWidget {
@@ -50,15 +48,16 @@ class _CustomerOpinionsState extends State<CustomerOpinions> {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(20.r),
                 border: Border.all(
-                  // color: Colours.LightBlue,
-                  color: Colors.black.withOpacity(.07),
+                  color: const Color(
+                      0x12000000), // Colors.black.withValues(alpha: .07)
                 ),
-                boxShadow: [
+                boxShadow: const [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.25), // Shadow color
-                    spreadRadius: 1, // How much the shadow spreads
-                    blurRadius: 5, // How blurry the shadow is
-                    offset: const Offset(5, 5), // Offset of the shadow (x, y)
+                    color: Color(
+                        0x40000000), // Colors.black.withValues(alpha: 0.25)
+                    spreadRadius: 1,
+                    blurRadius: 5,
+                    offset: Offset(5, 5),
                   ),
                 ],
               ),
@@ -95,7 +94,7 @@ class _CustomerOpinionsState extends State<CustomerOpinions> {
                                       imageUrl:
                                           '$imageUrl${widget.model.user!.imageCover!}',
                                       placeholder: (context, url) =>
-                                          const CircularProgressIndicator(), // While loading
+                                          customLoader(), // While loading
                                       errorWidget: (context, url, error) =>
                                           Image.asset(
                                         'assets/images/account.png',
@@ -119,7 +118,7 @@ class _CustomerOpinionsState extends State<CustomerOpinions> {
                                         widget.model.user!.fullName!,
                                         style: TextStyles.lightBlue16blod,
                                       )
-                                    : Container(),
+                                    : const SizedBox.shrink(),
                           ],
                         )
                       ],
@@ -196,7 +195,7 @@ class _CustomerOpinionsState extends State<CustomerOpinions> {
                       ],
                     ),
                   )
-                : Container(),
+                : const SizedBox.shrink(),
           ],
         );
       },

@@ -2,7 +2,7 @@ import 'package:dr_sami/core/constant_widgets/toast.dart';
 import 'package:dr_sami/core/theme/Colors/coluors.dart';
 import 'package:dr_sami/core/theme/text_styles/text_styeles.dart';
 import 'package:dr_sami/featurs/auth/admin/cubit/add_admin_cubit.dart';
-import 'package:dr_sami/featurs/auth/widgets/custom_Button.dart';
+import 'package:dr_sami/featurs/auth/widgets/custom_button.dart';
 import 'package:dr_sami/featurs/auth/widgets/textField.dart';
 import 'package:dr_sami/featurs/home_screen/widgets/condition.dart';
 import 'package:flutter/material.dart';

@@ -60,8 +60,8 @@ class _CheckBottonState extends State<CheckBotton> {
           style: ElevatedButton.styleFrom(
             foregroundColor: Colors.white,
             backgroundColor: Colours.LightBlue,
-            // disabledForegroundColor: Colors.grey.withOpacity(0.38),
-            disabledBackgroundColor: Colours.MidBlue.withOpacity(.5),
+            // disabledForegroundColor: Colors.grey.withValues(alpha: 0.38),
+            disabledBackgroundColor: Colours.MidBlue.withValues(alpha: .5),
             minimumSize: Size(200.w, 50.h),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),

@@ -1,7 +1,7 @@
 import 'package:dr_sami/featurs/home_screen/baners/cubit/banners_cubit.dart';
 import 'package:dr_sami/core/config/config.dart';
 import 'package:dr_sami/core/constant_widgets/toast.dart';
-import 'package:dr_sami/featurs/auth/widgets/custom_Button.dart';
+import 'package:dr_sami/featurs/auth/widgets/custom_button.dart';
 import 'package:dr_sami/featurs/auth/widgets/textField.dart';
 import 'package:dr_sami/featurs/home_screen/widgets/condition.dart';
 import 'package:dr_sami/routes/routes.dart';

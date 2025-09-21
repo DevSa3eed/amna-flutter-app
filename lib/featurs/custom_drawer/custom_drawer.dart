@@ -9,7 +9,7 @@ import 'package:dr_sami/core/config/config.dart';
 import 'package:dr_sami/core/theme/text_styles/text_styeles.dart';
 import 'package:dr_sami/featurs/auth/login/login.dart';
 import 'package:dr_sami/featurs/custom_drawer/widgets/custom_listtile.dart';
-import 'package:dr_sami/featurs/home_screen/opinions/add_opinion.dart';
+import 'package:dr_sami/featurs/home_screen/opinions/create_opinion_form.dart';
 import 'package:dr_sami/featurs/home_screen/requset_meet/user_requests.dart';
 import 'package:dr_sami/featurs/home_screen/teams/add_member.dart';
 import 'package:dr_sami/routes/routes.dart';
@@ -200,9 +200,9 @@ class CustomDrawer extends StatelessWidget {
                               .changeLanguage(isArabic!);
                           debugPrint(cacheHelper.getData('lang').toString());
                           if (isArabic!) {
-                            context.locale = const Locale('ar');
+                            context.setLocale(const Locale('ar'));
                           } else {
-                            context.locale = const Locale('en');
+                            context.setLocale(const Locale('en'));
                           }
                         },
                       ),
@@ -216,16 +216,19 @@ class CustomDrawer extends StatelessWidget {
                         Context: context,
                         functinon: () {},
                       ),
-                      CustomListTile(
-                        label: config.localization['userequests'],
-                        icon: IconlyBold.category,
-                        widget: userID != null
-                            ? const UserRequests()
-                            : const LoginFirst(),
-                        Context: context,
-                        functinon: () async {
-                          await context.read<MeetingCubit>().convertCurancy();
-                        },
+                      BlocProvider(
+                        create: (context) => MeetingCubit(),
+                        child: CustomListTile(
+                          label: config.localization['userequests'],
+                          icon: IconlyBold.category,
+                          widget: userID != null
+                              ? const UserRequests()
+                              : const LoginFirst(),
+                          Context: context,
+                          functinon: () async {
+                            await context.read<MeetingCubit>().convertCurancy();
+                          },
+                        ),
                       ),
 
                       userID == null

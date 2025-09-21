@@ -8,7 +8,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../../core/config/config.dart';
 import '../../../core/theme/Colors/coluors.dart';
 import '../../../core/theme/text_styles/text_styeles.dart';
-import 'add_your_oPinion.dart';
+import 'add_opinion_button.dart';
 import 'widgets/opinion_card.dart';
 
 class OpinonBulider extends StatefulWidget {
@@ -59,9 +59,9 @@ class _OpinonBuliderState extends State<OpinonBulider> {
                         // enlargeCenterPage: false,
                         autoPlay: false,
                         autoPlayAnimationDuration:
-                            const Duration(milliseconds: 3000),
+                            const Duration(milliseconds: 1000),
 
-                        autoPlayCurve: Curves.fastOutSlowIn,
+                        autoPlayCurve: Curves.easeInOut,
                         enableInfiniteScroll: true,
                         viewportFraction: 1,
                         onPageChanged: (index, reason) {

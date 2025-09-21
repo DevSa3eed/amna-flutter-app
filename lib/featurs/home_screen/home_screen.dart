@@ -1,25 +1,24 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dr_sami/constants/api_constants/api_constant.dart';
-import 'package:dr_sami/constants/cached_constants/cached_constants.dart';
-import 'package:dr_sami/core/constant_widgets/circle_progress.dart';
-
-import 'package:dr_sami/core/theme/Colors/coluors.dart';
-import 'package:dr_sami/core/theme/text_styles/text_styeles.dart';
-import 'package:dr_sami/featurs/home_screen/opinions/cubit/opinions_cubit.dart';
-import 'package:dr_sami/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconly/iconly.dart';
 
-import '../../core/animated_navigation/animated_navigator.dart';
-import '../../core/config/config.dart';
-import '../custom_drawer/custom_drawer.dart';
-import 'baners/banners.dart';
-import 'clinic/clinics.dart';
-import 'opinions/all_opinions.dart';
-import 'teams/team_members.dart';
-import 'widgets/icons.dart';
+import 'package:dr_sami/constants/api_constants/api_constant.dart';
+import 'package:dr_sami/constants/cached_constants/cached_constants.dart';
+import 'package:dr_sami/core/animated_navigation/animated_navigator.dart';
+import 'package:dr_sami/core/config/config.dart';
+import 'package:dr_sami/core/constant_widgets/circle_progress.dart';
+import 'package:dr_sami/core/theme/Colors/coluors.dart';
+import 'package:dr_sami/core/theme/text_styles/text_styeles.dart';
+import 'package:dr_sami/featurs/custom_drawer/custom_drawer.dart';
+import 'package:dr_sami/featurs/home_screen/baners/banners.dart';
+import 'package:dr_sami/featurs/home_screen/clinic/clinics.dart';
+import 'package:dr_sami/featurs/home_screen/opinions/all_opinions.dart';
+import 'package:dr_sami/featurs/home_screen/opinions/cubit/opinions_cubit.dart';
+import 'package:dr_sami/featurs/home_screen/teams/team_members.dart';
+import 'package:dr_sami/featurs/home_screen/widgets/icons.dart';
+import 'package:dr_sami/routes/routes.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});

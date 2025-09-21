@@ -25,15 +25,15 @@ class cacheHelper {
     return await sharedPreferences!.remove(key);
   }
 
-  static const String LANGUAGE_CODE = 'languageCode';
+  static const String languageCode = 'languageCode';
 
   Future<void> setLanguage(String code) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString(LANGUAGE_CODE, code);
+    await prefs.setString(languageCode, code);
   }
 
   Future<String> getLanguage() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString(LANGUAGE_CODE) ?? 'en';
+    return prefs.getString(languageCode) ?? 'en';
   }
 }

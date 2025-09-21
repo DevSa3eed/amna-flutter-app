@@ -1,5 +1,5 @@
 import 'package:dr_sami/core/theme/Colors/coluors.dart';
-import 'package:dr_sami/featurs/auth/widgets/custom_Button.dart';
+import 'package:dr_sami/featurs/auth/widgets/custom_button.dart';
 import 'package:dr_sami/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

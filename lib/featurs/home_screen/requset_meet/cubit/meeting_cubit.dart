@@ -5,7 +5,7 @@ import 'package:dr_sami/constants/api_constants/api_constant.dart';
 import 'package:dr_sami/constants/cached_constants/cached_constants.dart';
 import 'package:dr_sami/core/constant_widgets/toast.dart';
 import 'package:dr_sami/featurs/home_screen/requset_meet/model/meeting_model.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -45,7 +45,9 @@ class MeetingCubit extends Cubit<MeetingState> {
       log('Success');
       emit(ConvertedSuccess());
     } else {
-      print(response.statusMessage);
+      if (kDebugMode) {
+        print(response.statusMessage);
+      }
       //  log(e.toString());
       log('error currency limted');
 

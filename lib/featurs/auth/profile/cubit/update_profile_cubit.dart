@@ -11,7 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../constants/api_constants/api_constant.dart';
 
 class ProfileInitial extends ProfileState {
-  ProfileInitial()
+  const ProfileInitial()
       : super(
           username: '',
           password: '',
@@ -74,7 +74,7 @@ class ProfileState extends Equatable {
 }
 
 class ProfileUpdating extends ProfileState {
-  ProfileUpdating()
+  const ProfileUpdating()
       : super(
           fullName: '',
           username: '',
@@ -88,7 +88,7 @@ class ProfileUpdating extends ProfileState {
 class ProfileUpdated extends ProfileState {
   final String message;
 
-  ProfileUpdated({
+  const ProfileUpdated({
     required super.fullName,
     required super.username,
     required super.email,
@@ -115,7 +115,7 @@ class ProfileUpdated extends ProfileState {
 class ProfileUpdateError extends ProfileState {
   final String error;
 
-  ProfileUpdateError(this.error)
+  const ProfileUpdateError(this.error)
       : super(
           fullName: '',
           username: '',
@@ -130,7 +130,7 @@ class ProfileUpdateError extends ProfileState {
 }
 
 class ProfileCubit extends Cubit<ProfileState> {
-  ProfileCubit() : super(ProfileInitial());
+  ProfileCubit() : super(const ProfileInitial());
 
   Future<void> loadProfile() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -187,7 +187,7 @@ class ProfileCubit extends Cubit<ProfileState> {
     final String url = '${baseUrl}Auth/UpdateSubProfile/$id';
 
     try {
-      emit(ProfileUpdating());
+      emit(const ProfileUpdating());
       log('Emitting ProfileUpdating state');
 
       // Set up the request

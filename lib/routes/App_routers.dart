@@ -16,7 +16,7 @@ import 'package:flutter/material.dart';
 
 import '../featurs/auth/profile/update_profil.dart';
 import '../featurs/auth/register/register.dart';
-import '../featurs/home_screen/opinions/add_opinion.dart';
+import '../featurs/home_screen/opinions/create_opinion_form.dart';
 
 class AppRouter {
   static Route generateRoute(RouteSettings settings) {
