@@ -10,12 +10,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'amna.dart';
 import 'constants/cached_constants/cached_constants.dart';
 import 'core/config/config.dart';
+import 'core/error_handler/error_handler.dart';
 import 'network/local/cache_helper.dart';
 import 'network/remote/dio_helper.dart';
 
 void main() async {
   WidgetsFlutterBinding
       .ensureInitialized(); // Ensure that the binding is initialized
+
+  // Initialize error handling
+  ErrorHandler.init();
+
   await ScreenUtil.ensureScreenSize();
 
   await EasyLocalization.ensureInitialized();
