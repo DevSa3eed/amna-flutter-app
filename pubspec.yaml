@@ -37,6 +37,8 @@ dependencies:
   skeletonizer: ^2.1.0+1
   smooth_page_indicator: ^1.2.0+3
   url_launcher: ^6.3.1
+  flutter_local_notifications: ^17.2.3
+  timezone: ^0.9.4
 
 dev_dependencies:
   flutter_inappwebview: ^6.1.5
