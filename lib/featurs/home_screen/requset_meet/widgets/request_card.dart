@@ -5,9 +5,9 @@ import 'dart:developer';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dr_sami/constants/api_constants/api_constant.dart';
 import 'package:dr_sami/core/config/config.dart';
+import 'package:dr_sami/core/services/notification_service.dart';
 import 'package:dr_sami/core/theme/Colors/coluors.dart';
 import 'package:dr_sami/featurs/auth/widgets/textField.dart';
-import 'package:dr_sami/featurs/home_screen/requset_meet/create_meeting.dart';
 import 'package:dr_sami/featurs/home_screen/requset_meet/cubit/meeting_cubit.dart';
 import 'package:dr_sami/featurs/home_screen/requset_meet/model/meeting_model.dart';
 import 'package:flutter/material.dart';
@@ -206,23 +206,7 @@ class RequestCard extends StatelessWidget {
                                               SmallButton(
                                                 condition: false,
                                                 color: Colours.DarkBlue,
-                                                text: 'Vedio',
-                                                fun: () {
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            CreateMeeting(
-                                                          phone: model.user!
-                                                              .phoneNumber!,
-                                                        ),
-                                                      ));
-                                                },
-                                              ),
-                                              SmallButton(
-                                                condition: false,
-                                                color: Colours.DarkBlue,
-                                                text: 'call',
+                                                text: 'Call',
                                                 fun: () {
                                                   cubit.makePhoneCall(
                                                       model.user!.phoneNumber!);
@@ -454,6 +438,21 @@ class RequestCard extends StatelessWidget {
                                                               phone: model.user!
                                                                   .phoneNumber!,
                                                               id: model.id!);
+
+                                                      // Send payment confirmation notification
+                                                      try {
+                                                        await NotificationService
+                                                            .sendPaymentConfirmation(
+                                                          appointmentId: model
+                                                              .id
+                                                              .toString(),
+                                                          amount: model.price ??
+                                                              0.0,
+                                                        );
+                                                      } catch (notificationError) {
+                                                        log('Payment notification error: $notificationError');
+                                                      }
+
                                                       QuickAlert.show(
                                                         context: context,
                                                         type: QuickAlertType

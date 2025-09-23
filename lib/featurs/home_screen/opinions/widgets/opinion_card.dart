@@ -9,6 +9,7 @@ import 'package:dr_sami/core/constant_widgets/circle_progress.dart';
 import 'package:dr_sami/core/constant_widgets/toast.dart';
 import 'package:dr_sami/core/theme/Colors/coluors.dart';
 import 'package:dr_sami/core/theme/text_styles/text_styeles.dart';
+import 'package:dr_sami/core/widgets/star_rating_widget.dart';
 import 'package:dr_sami/featurs/auth/profile/cubit/profile_cubit.dart';
 import 'package:dr_sami/featurs/home_screen/opinions/edit_opinion.dart';
 import 'package:dr_sami/featurs/home_screen/opinions/cubit/opinions_cubit.dart';
@@ -135,6 +136,32 @@ class _CustomerOpinionsState extends State<CustomerOpinions> {
                     SizedBox(
                       height: 5.w,
                     ),
+                    // Star rating display
+                    if (widget.model.rating != null) ...[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          StarRatingDisplay(
+                            rating: widget.model.rating!,
+                            starSize: 16.0,
+                            activeColor: Colors.amber,
+                            inactiveColor: Colors.grey,
+                          ),
+                          SizedBox(width: 8.w),
+                          Text(
+                            widget.model.rating!.toStringAsFixed(1),
+                            style: TextStyle(
+                              color: Colours.Black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14.sp,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 5.w,
+                      ),
+                    ],
                     Text(
                       widget.model.description!,
                       style: TextStyle(

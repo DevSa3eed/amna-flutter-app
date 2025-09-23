@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../core/config/config.dart';
-import '../../../core/theme/text_styles/text_styeles.dart';
 import '../widgets/condition.dart';
 import 'widgets/team_member_card.dart';
 
@@ -28,41 +26,32 @@ class TeamMembers extends StatelessWidget {
               ? Container()
               : Padding(
                   padding: EdgeInsets.all(16.w),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        config.localization['ourTeam'],
-                        style: TextStyles.lightBlue20blod,
-                      ),
-                      SizedBox(
-                        height: MediaQuery.sizeOf(context).height / 1.9,
-                        child: CarouselSlider(
-                          items: [
-                            for (int i = 0; i < cubit.listOfMembers.length; i++)
-                              ConditionBuilder(
-                                condition: state is TeamsLoading,
-                                ifFalse: TeamCard(
-                                  teamMember: cubit.listOfMembers[i],
-                                ),
-                              ),
-                          ],
-                          // controller: buttonCarouselController,
-                          options: CarouselOptions(
-                            height: MediaQuery.sizeOf(context).height / 1.9,
-                            autoPlayAnimationDuration:
-                                const Duration(milliseconds: 2000),
-                            pauseAutoPlayOnTouch: true,
-                            autoPlay: true,
-                            enlargeCenterPage: false,
-                            viewportFraction: 1,
-                            aspectRatio: 1,
-                            initialPage: 2,
-                            pageSnapping: false,
+                  child: SizedBox(
+                    height: MediaQuery.sizeOf(context).height / 1.9,
+                    child: CarouselSlider(
+                      items: [
+                        for (int i = 0; i < cubit.listOfMembers.length; i++)
+                          ConditionBuilder(
+                            condition: state is TeamsLoading,
+                            ifFalse: TeamCard(
+                              teamMember: cubit.listOfMembers[i],
+                            ),
                           ),
-                        ),
+                      ],
+                      // controller: buttonCarouselController,
+                      options: CarouselOptions(
+                        height: MediaQuery.sizeOf(context).height / 1.9,
+                        autoPlayAnimationDuration:
+                            const Duration(milliseconds: 2000),
+                        pauseAutoPlayOnTouch: true,
+                        autoPlay: true,
+                        enlargeCenterPage: false,
+                        viewportFraction: 1,
+                        aspectRatio: 1,
+                        initialPage: 2,
+                        pageSnapping: false,
                       ),
-                    ],
+                    ),
                   ),
                 );
         },

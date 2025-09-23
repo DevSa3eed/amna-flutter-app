@@ -1,6 +1,7 @@
 import 'package:dr_sami/core/extensions/media_values.dart';
 import 'package:dr_sami/core/theme/Colors/coluors.dart';
 import 'package:dr_sami/core/config/config.dart';
+import 'package:dr_sami/core/services/auth_service.dart';
 import 'package:dr_sami/core/theme/text_styles/text_styeles.dart';
 import 'package:dr_sami/routes/routes.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -30,6 +31,8 @@ class CustomDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authService = AuthService.instance;
+
     return Scaffold(
       backgroundColor: Colours.White,
       body: BlocProvider(
@@ -39,9 +42,9 @@ class CustomDrawer extends StatelessWidget {
           builder: (context, state) {
             return Column(
               children: [
-                _buildHeader(context),
+                _buildHeader(context, authService),
                 Expanded(
-                  child: _buildNavigationContent(context),
+                  child: _buildNavigationContent(context, authService),
                 ),
               ],
             );
@@ -51,8 +54,8 @@ class CustomDrawer extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader(BuildContext context) {
-    return image != null
+  Widget _buildHeader(BuildContext context, AuthService authService) {
+    return authService.currentUserImage != null
         ? Container(
             width: context.width,
             decoration: BoxDecoration(
@@ -211,29 +214,6 @@ class CustomDrawer extends StatelessWidget {
                         height: 120.w,
                         color: Colours.White,
                       ),
-                      SizedBox(height: 16.h),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, Routes.loginRoute);
-                          Navigator.pop(context);
-                        },
-                        style: TextButton.styleFrom(
-                          backgroundColor: Colors.white.withValues(alpha: 0.2),
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 24.w,
-                            vertical: 12.h,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(25.r),
-                          ),
-                        ),
-                        child: Text(
-                          config.localization['login'],
-                          style: TextStyles.white20blod.copyWith(
-                            fontSize: 16.sp,
-                          ),
-                        ),
-                      ),
                       SizedBox(height: 20.h),
                     ],
                   ),
@@ -243,7 +223,8 @@ class CustomDrawer extends StatelessWidget {
           );
   }
 
-  Widget _buildNavigationContent(BuildContext context) {
+  Widget _buildNavigationContent(
+      BuildContext context, AuthService authService) {
     return ListView.builder(
       physics: const ClampingScrollPhysics(),
       itemCount: 1,
@@ -257,59 +238,63 @@ class CustomDrawer extends StatelessWidget {
                 NavigationItem(
                   label: config.localization['home'],
                   icon: IconlyBold.home,
-                  route: Routes.homeRoute,
+                  onTap: () async {
+                    Navigator.pop(context); // Close drawer first
+                    await Future.delayed(const Duration(milliseconds: 100));
+                    if (context.mounted) {
+                      Navigator.pushNamed(context, Routes.homeRoute);
+                    }
+                  },
                   isSelected:
                       ModalRoute.of(context)?.settings.name == Routes.homeRoute,
                 ),
               ],
             ),
 
-            // Features Group
-            NavigationGroup(
-              title: config.localization['features'],
-              items: [
-                NavigationItem(
-                  label: config.localization['requestMeeting'],
-                  icon: IconlyBold.video,
-                  onTap: () {
-                    if (userID != null) {
+            // Features Group - Only show if authenticated
+            if (authService.isAuthenticated)
+              NavigationGroup(
+                title: config.localization['features'],
+                items: [
+                  NavigationItem(
+                    label: 'Find Doctors',
+                    icon: IconlyBold.search,
+                    onTap: () async {
+                      Navigator.pop(context); // Close drawer first
+                      await Future.delayed(const Duration(milliseconds: 100));
+                      if (context.mounted) {
+                        Navigator.pushNamed(context, Routes.doctorSearchRoute);
+                      }
+                    },
+                  ),
+                  NavigationItem(
+                    label: config.localization['requestMeeting'],
+                    icon: IconlyBold.call,
+                    onTap: () {
                       Navigator.pushNamed(context, Routes.requsetMeatRoute);
-                    } else {
-                      Navigator.pushNamed(context, Routes.loginFirstRoute);
-                    }
-                  },
-                ),
-                NavigationItem(
-                  label: config.localization['addOPinion'],
-                  icon: IconlyBold.plus,
-                  onTap: () {
-                    if (userID != null) {
+                    },
+                  ),
+                  NavigationItem(
+                    label: config.localization['addOPinion'],
+                    icon: IconlyBold.plus,
+                    onTap: () {
                       Navigator.pushNamed(context, Routes.addOpinionRoute);
-                    } else {
-                      Navigator.pushNamed(context, Routes.loginFirstRoute);
-                    }
-                  },
-                ),
-                NavigationItem(
-                  label: config.localization['userequests'],
-                  icon: IconlyBold.category,
-                  onTap: () async {
-                    if (userID != null) {
-                      final meetingCubit = MeetingCubit();
-                      await meetingCubit.convertCurancy();
+                    },
+                  ),
+                  NavigationItem(
+                    label: config.localization['userequests'],
+                    icon: IconlyBold.category,
+                    onTap: () async {
+                      Navigator.pop(context); // Close drawer first
+                      await Future.delayed(const Duration(milliseconds: 100));
                       if (context.mounted) {
                         Navigator.pushNamed(
                             context, Routes.userRequestsMeetRoute);
-                        Navigator.pop(context); // Close drawer
                       }
-                    } else {
-                      Navigator.pushNamed(context, Routes.loginFirstRoute);
-                      Navigator.pop(context); // Close drawer
-                    }
-                  },
-                ),
-              ],
-            ),
+                    },
+                  ),
+                ],
+              ),
 
             // Settings Group
             NavigationGroup(
@@ -332,8 +317,8 @@ class CustomDrawer extends StatelessWidget {
               ],
             ),
 
-            // Account Group
-            if (userID == null)
+            // Account Group - Only show if not authenticated
+            if (!authService.isAuthenticated)
               NavigationGroup(
                 title: config.localization['account'],
                 items: [
@@ -354,11 +339,23 @@ class CustomDrawer extends StatelessWidget {
                 ],
               ),
 
-            // Admin Group
-            if (isAdmin!)
+            // Admin Group - Only show if admin
+            if (authService.isAdminUser)
               NavigationGroup(
                 title: config.localization['admin'],
                 items: [
+                  NavigationItem(
+                    label: 'Admin Dashboard',
+                    icon: IconlyBold.category,
+                    onTap: () async {
+                      Navigator.pop(context); // Close drawer first
+                      await Future.delayed(const Duration(milliseconds: 100));
+                      if (context.mounted) {
+                        Navigator.pushNamed(
+                            context, Routes.adminDashboardRoute);
+                      }
+                    },
+                  ),
                   NavigationItem(
                     label: config.localization['addadmin'],
                     icon: IconlyLight.add_user,
@@ -390,28 +387,34 @@ class CustomDrawer extends StatelessWidget {
                     label: config.localization['adminrequset'],
                     icon: IconlyBold.category,
                     onTap: () async {
-                      final meetingCubit = MeetingCubit();
-                      await meetingCubit.convertCurancy();
+                      Navigator.pop(context); // Close drawer first
+                      await Future.delayed(const Duration(milliseconds: 100));
                       if (context.mounted) {
                         Navigator.pushNamed(
                             context, Routes.allRequestsMeetRoute);
-                        Navigator.pop(context); // Close drawer
                       }
                     },
                   ),
                 ],
               ),
 
-            // User Actions Group
-            if (userID != null)
+            // User Actions Group - Only show if authenticated
+            if (authService.isAuthenticated)
               NavigationGroup(
                 title: config.localization['actions'],
                 items: [
                   NavigationItem(
                     label: config.localization['signout'],
                     icon: IconlyBold.logout,
-                    onTap: () {
-                      context.read<LocalizationCubit>().logOut();
+                    onTap: () async {
+                      await authService.logout();
+                      if (context.mounted) {
+                        Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          Routes.intialRoute,
+                          (route) => false,
+                        );
+                      }
                     },
                   ),
                   NavigationItem(

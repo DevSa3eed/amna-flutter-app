@@ -5,9 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-import '../../../core/config/config.dart';
 import '../../../core/theme/Colors/coluors.dart';
-import '../../../core/theme/text_styles/text_styeles.dart';
 import 'add_opinion_button.dart';
 import 'widgets/opinion_card.dart';
 
@@ -39,13 +37,7 @@ class _OpinonBuliderState extends State<OpinonBulider> {
             : Padding(
                 padding: EdgeInsets.all(16.0.w),
                 child: Column(
-                  // mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      config.localization['custmoerOpinion'],
-                      style: TextStyles.lightBlue20blod,
-                    ),
                     CarouselSlider(
                       items: [
                         for (int i = 0; i < cubit.listofOpinion.length; i++)

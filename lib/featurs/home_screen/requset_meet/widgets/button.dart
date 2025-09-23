@@ -31,7 +31,7 @@ class SmallButton extends StatelessWidget {
           // height: 40.h,
           decoration: BoxDecoration(
             color: color,
-            borderRadius: BorderRadius.circular(15.r),
+            borderRadius: BorderRadius.circular(20.r),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,

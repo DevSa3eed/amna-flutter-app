@@ -68,11 +68,18 @@ class OpinionsCubit extends Cubit<OpinionsState> {
   }
   //===================>>> Add Opinions <<<===================\\
 
-  Future AddOpinions(
-      {required String title, required String description}) async {
+  Future AddOpinions({
+    required String title,
+    required String description,
+    double? rating,
+  }) async {
     emit(AddOpinionsloading());
-    FormData formData = FormData.fromMap(
-        {"Titel": title, "Description": description, "UsersId": userID});
+    FormData formData = FormData.fromMap({
+      "Titel": title,
+      "Description": description,
+      "UsersId": userID,
+      if (rating != null) "Rating": rating,
+    });
     await dio.post('${baseUrl}UserReview/AddReview', data: formData).then((v) {
       if (v.statusCode == 200) {
         emit(AddOpinionsSuccess(message: 'Your Opinion Added Successfully'));

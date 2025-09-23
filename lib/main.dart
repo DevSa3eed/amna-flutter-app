@@ -11,6 +11,8 @@ import 'amna.dart';
 import 'constants/cached_constants/cached_constants.dart';
 import 'core/config/config.dart';
 import 'core/error_handler/error_handler.dart';
+import 'core/services/auth_service.dart';
+import 'core/services/notification_service.dart';
 import 'network/local/cache_helper.dart';
 import 'network/remote/dio_helper.dart';
 
@@ -31,25 +33,23 @@ void main() async {
   await cacheHelper.init();
   lang = cacheHelper.getData('lang') ?? false;
   await config.LoadLanguage(lang!);
-  userID = cacheHelper.getData('userID');
-  token = cacheHelper.getData('token');
-  isAdmin = cacheHelper.getData('isAdmin') ?? false;
-  name = cacheHelper.getData('name');
-  image = cacheHelper.getData('image');
-  userEmail = cacheHelper.getData('email');
-  username = cacheHelper.getData('username');
-  phone = cacheHelper.getData('phone');
   onBoarding = cacheHelper.getData('onBoarding') ?? false;
-  // cacheHelper.removeData('onBoarding');
+
+  // Initialize authentication service
+  await AuthService.instance.initializeAuth();
+
+  // Initialize notification service
+  await NotificationService.initialize();
+
+  // Debug logging
   log('/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/');
-  log(userID ?? '');
-  log(token ?? '');
-  log(name ?? '');
-  log(image ?? '');
-  log(userEmail ?? '');
-  log(username ?? '');
-  log(phone ?? '');
-  log(isAdmin!.toString());
+  log('Auth Status: ${AuthService.instance.isAuthenticated}');
+  log('User ID: ${AuthService.instance.currentUserID ?? 'null'}');
+  log('Token: ${AuthService.instance.currentToken ?? 'null'}');
+  log('Name: ${AuthService.instance.currentUserName ?? 'null'}');
+  log('Email: ${AuthService.instance.currentUserEmail ?? 'null'}');
+  log('Image: ${AuthService.instance.currentUserImage ?? 'null'}');
+  log('Is Admin: ${AuthService.instance.isAdminUser}');
   log('/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/');
 
   // runApp(

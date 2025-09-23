@@ -76,4 +76,39 @@ class TextStyles {
     fontWeight: FontWeight.bold,
     fontFamily: 'RobotoCondensed',
   );
+
+  // Additional text styles for doctor search
+  static TextStyle black14 = TextStyle(
+    color: Colors.black,
+    fontSize: 14.sp,
+    fontFamily: 'RobotoCondensed',
+  );
+  static TextStyle black14blod = TextStyle(
+    color: Colors.black,
+    fontSize: 14.sp,
+    fontWeight: FontWeight.bold,
+    fontFamily: 'RobotoCondensed',
+  );
+  static TextStyle black16blod = TextStyle(
+    color: Colors.black,
+    fontSize: 16.sp,
+    fontWeight: FontWeight.bold,
+    fontFamily: 'RobotoCondensed',
+  );
+  static TextStyle black18blod = TextStyle(
+    color: Colors.black,
+    fontSize: 18.sp,
+    fontWeight: FontWeight.bold,
+    fontFamily: 'RobotoCondensed',
+  );
+  static TextStyle grey12 = TextStyle(
+    color: Colors.grey,
+    fontSize: 12.sp,
+    fontFamily: 'RobotoCondensed',
+  );
+  static TextStyle grey14 = TextStyle(
+    color: Colors.grey,
+    fontSize: 14.sp,
+    fontFamily: 'RobotoCondensed',
+  );
 }

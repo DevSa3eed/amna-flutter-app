@@ -10,13 +10,19 @@ import 'package:dr_sami/featurs/home_screen/home_screen.dart';
 import 'package:dr_sami/featurs/home_screen/requset_meet/all_request.dart';
 import 'package:dr_sami/featurs/home_screen/requset_meet/requst_meet.dart';
 import 'package:dr_sami/featurs/home_screen/requset_meet/user_requests.dart';
+import 'package:dr_sami/featurs/landing/landing_page.dart';
 import 'package:dr_sami/featurs/onboarding/onboarding_screen.dart';
 import 'package:dr_sami/routes/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../featurs/admin/admin_dashboard.dart';
 import '../featurs/auth/profile/update_profil.dart';
 import '../featurs/auth/register/register.dart';
 import '../featurs/home_screen/opinions/create_opinion_form.dart';
+import '../featurs/doctors/screens/doctor_search_screen.dart';
+import '../featurs/doctors/cubit/doctor_search_cubit.dart';
+import '../core/widgets/notification_test_widget.dart';
 
 class AppRouter {
   static Route generateRoute(RouteSettings settings) {
@@ -54,6 +60,20 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const Eula());
       case Routes.loginFirstRoute:
         return MaterialPageRoute(builder: (_) => const LoginFirst());
+      case Routes.landingRoute:
+        return MaterialPageRoute(builder: (_) => const LandingPage());
+      case Routes.adminDashboardRoute:
+        return MaterialPageRoute(builder: (_) => const AdminDashboard());
+      case Routes.doctorSearchRoute:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => DoctorSearchCubit(),
+            child: const DoctorSearchScreen(),
+          ),
+        );
+      case Routes.notificationTestRoute:
+        return MaterialPageRoute(
+            builder: (_) => const NotificationTestWidget());
 
       default:
         return MaterialPageRoute(

@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../constants/cached_constants/cached_constants.dart';
+import '../../core/services/auth_service.dart';
 import '../../core/theme/Colors/coluors.dart';
 import '../../core/theme/text_styles/text_styeles.dart';
 import '../../network/local/cache_helper.dart';
@@ -47,12 +48,16 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
 
     Future<void> submit() async {
       await cacheHelper.SaveData(key: 'onBoarding', value: true);
-      if (mounted) {
-        onBoarding = cacheHelper.getData('onBoarding');
-        if (mounted) {
-          Navigator.pushNamedAndRemoveUntil(
-              context, Routes.homeRoute, (route) => false);
-        }
+      onBoarding = cacheHelper.getData('onBoarding');
+
+      // Route user based on authentication status
+      final authService = AuthService.instance;
+      if (authService.isAuthenticated) {
+        Navigator.pushNamedAndRemoveUntil(
+            context, Routes.homeRoute, (route) => false);
+      } else {
+        Navigator.pushNamedAndRemoveUntil(
+            context, Routes.landingRoute, (route) => false);
       }
     }
 
@@ -138,6 +143,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               itemCount: items.length,
             ),
           ),
+          // Main action button
           CustomBotton(
               navigate_fun: () async {
                 if (isLast) {
@@ -157,6 +163,60 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   ? config.localization['getstared']
                   : config.localization['next'],
               fontSize: 20.sp),
+
+          // Additional action buttons on last page
+          if (isLast) ...[
+            SizedBox(height: 10.h),
+            Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, Routes.loginRoute);
+                    },
+                    style: OutlinedButton.styleFrom(
+                      side: BorderSide(color: Colours.LightBlue),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.r),
+                      ),
+                      padding: EdgeInsets.symmetric(vertical: 12.h),
+                    ),
+                    child: Text(
+                      config.localization['login'],
+                      style: TextStyle(
+                        color: Colours.LightBlue,
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(width: 10.w),
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, Routes.eulaRoute);
+                    },
+                    style: OutlinedButton.styleFrom(
+                      side: BorderSide(color: Colours.DarkBlue),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.r),
+                      ),
+                      padding: EdgeInsets.symmetric(vertical: 12.h),
+                    ),
+                    child: Text(
+                      config.localization['register'],
+                      style: TextStyle(
+                        color: Colours.DarkBlue,
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
           SizedBox(
             height: 15.h,
           ),

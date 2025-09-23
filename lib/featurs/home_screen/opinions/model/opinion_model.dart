@@ -2,15 +2,27 @@ class Opinions {
   int? id;
   String? titel;
   String? description;
+  double? rating;
   User? user;
+  DateTime? createdAt;
 
-  Opinions({this.id, this.titel, this.description, this.user});
+  Opinions({
+    this.id,
+    this.titel,
+    this.description,
+    this.rating,
+    this.user,
+    this.createdAt,
+  });
 
   Opinions.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     titel = json['titel'];
     description = json['description'];
+    rating = json['rating']?.toDouble();
     user = json['user'] != null ? User.fromJson(json['user']) : null;
+    createdAt =
+        json['createdAt'] != null ? DateTime.parse(json['createdAt']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -18,9 +30,11 @@ class Opinions {
     data['id'] = id;
     data['titel'] = titel;
     data['description'] = description;
+    data['rating'] = rating;
     if (user != null) {
       data['user'] = user!.toJson();
     }
+    data['createdAt'] = createdAt?.toIso8601String();
     return data;
   }
 }

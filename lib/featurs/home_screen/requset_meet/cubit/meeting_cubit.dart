@@ -89,24 +89,22 @@ class MeetingCubit extends Cubit<MeetingState> {
     }
   }
 
-  void startMeeting(
-    String url,
-  ) async {
-    final Uri uri = Uri.parse(url);
-
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
-    } else {
-      showToast(content: 'The URL could not be opened.');
-      log("WhatsApp is not installed or the URL could not be opened.");
-    }
-  }
-
   //================>>>> Get All Requst For User <<<<================\\
   List<MeetingRequest> userMeetingList = [];
 
   Future getAllRequsetForUser() async {
     emit(GetRequestsLoading());
+
+    // For demo mode, show empty list (user can create new requests)
+    if (userID == '1') {
+      await Future.delayed(const Duration(seconds: 1)); // Simulate loading
+      userMeetingList =
+          []; // Empty list for demo - user can create new requests
+      emit(GetRequestsSuccess(message: 'Demo mode - no existing requests'));
+      return;
+    }
+
+    // Original API call for real users
     await dio.get(
       '${baseUrl}RequestMeet/GetAllRequestForUser',
       queryParameters: {
@@ -274,43 +272,6 @@ class MeetingCubit extends Cubit<MeetingState> {
       log(e.toString());
 
       emit(ApproveRequestsFailed(message: 'Sorry Try Again'));
-    });
-  }
-
-  //================>>>> Create Meeting <<<<================\\
-  String? meetingUrl;
-  String? startMeetingUrl;
-
-  Future<void> createMeet({
-    required String title,
-    required String start,
-    required String duration,
-    required String phone,
-  }) async {
-    emit(CreateMeetingLoading());
-
-    FormData formData = FormData.fromMap({
-      "Title": title,
-      "StartDateTime": start,
-      "DurationInMinute": duration,
-    });
-
-    await dio.post('${baseUrl}Zoom/createMeeting', data: formData).then((v) {
-      if (v.statusCode == 200 || v.statusCode == 201) {
-        meetingUrl = v.data['data']['join_url'] ?? '';
-        startMeetingUrl = v.data['data']['start_url'] ?? '';
-        log(meetingUrl!);
-        sendWhatsAppMessage(phone,
-            ' Hello, I have scheduled a medical consultation for you. You can join the meeting in $start by clicking on the following link: $meetingUrl.');
-
-        emit(CreateMeetingSuccess(message: 'Meeting Created Successfully'));
-      } else {
-        emit(CreateMeetingFailed(message: 'Unexpected error occurred'));
-      }
-    }).catchError((e) {
-      log('=======================================================');
-      log('Error==>> ${e.toString()}');
-      emit(CreateMeetingFailed(message: 'Meeting Failed To Create'));
     });
   }
 }

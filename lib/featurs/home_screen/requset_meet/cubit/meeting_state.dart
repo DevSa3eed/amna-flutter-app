@@ -77,18 +77,6 @@ final class DeleteRequestsFailed extends MeetingState {
   DeleteRequestsFailed({required this.message});
 }
 
-final class CreateMeetingLoading extends MeetingState {}
-
-final class CreateMeetingSuccess extends MeetingState {
-  String message;
-  CreateMeetingSuccess({required this.message});
-}
-
-final class CreateMeetingFailed extends MeetingState {
-  String message;
-  CreateMeetingFailed({required this.message});
-}
-
 final class CallSuccess extends MeetingState {}
 
 final class CallFailed extends MeetingState {}

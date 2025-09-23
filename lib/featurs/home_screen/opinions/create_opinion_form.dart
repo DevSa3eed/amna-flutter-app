@@ -2,6 +2,7 @@ import 'package:dr_sami/core/config/config.dart';
 import 'package:dr_sami/core/constant_widgets/toast.dart';
 import 'package:dr_sami/core/theme/Colors/coluors.dart';
 import 'package:dr_sami/core/theme/text_styles/text_styeles.dart';
+import 'package:dr_sami/core/widgets/star_rating_widget.dart';
 import 'package:dr_sami/featurs/auth/widgets/custom_button.dart';
 import 'package:dr_sami/featurs/auth/widgets/textField.dart';
 import 'package:dr_sami/featurs/home_screen/opinions/cubit/opinions_cubit.dart';
@@ -11,15 +12,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class AddOpinion extends StatelessWidget {
+class AddOpinion extends StatefulWidget {
   const AddOpinion({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    TextEditingController titleController = TextEditingController();
-    TextEditingController descController = TextEditingController();
-    GlobalKey<FormState> opinionFormKey = GlobalKey<FormState>();
+  State<AddOpinion> createState() => _AddOpinionState();
+}
 
+class _AddOpinionState extends State<AddOpinion> {
+  final TextEditingController titleController = TextEditingController();
+  final TextEditingController descController = TextEditingController();
+  final GlobalKey<FormState> opinionFormKey = GlobalKey<FormState>();
+  double _rating = 0.0;
+
+  @override
+  Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => OpinionsCubit(),
       child: BlocConsumer<OpinionsCubit, OpinionsState>(
@@ -65,6 +72,41 @@ class AddOpinion extends StatelessWidget {
                             isPassword: false,
                             iconPre: Icons.text_fields_rounded,
                             type: TextInputType.text),
+
+                        // Rating section
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 20.w, vertical: 10.h),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Rate your experience',
+                                style: TextStyles.black16blod,
+                              ),
+                              SizedBox(height: 10.h),
+                              StarRatingWidget(
+                                initialRating: _rating,
+                                onRatingChanged: (rating) {
+                                  setState(() {
+                                    _rating = rating;
+                                  });
+                                },
+                                starSize: 30.0,
+                                activeColor: Colors.amber,
+                                inactiveColor: Colors.grey,
+                              ),
+                              SizedBox(height: 5.h),
+                              Text(
+                                _rating > 0
+                                    ? '${_rating.toStringAsFixed(1)} stars'
+                                    : 'No rating',
+                                style: TextStyles.grey14,
+                              ),
+                            ],
+                          ),
+                        ),
+
                         ConditionBuilder(
                             condition: state is AddOpinionsloading,
                             ifFalse: CustomBotton(
@@ -73,6 +115,7 @@ class AddOpinion extends StatelessWidget {
                                     cubit.AddOpinions(
                                       title: titleController.text,
                                       description: descController.text,
+                                      rating: _rating > 0 ? _rating : null,
                                     );
                                   }
                                 },

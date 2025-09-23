@@ -1,4 +1,5 @@
 class Routes {
+  static const String splashRoute = '/splash';
   static const String intialRoute = '/';
   static const String homeRoute = '/HomePAge';
   static const String loginRoute = '/LoginPage';
@@ -15,4 +16,8 @@ class Routes {
   static const String updateProfileRoute = '/ UpdateProfile';
   static const String loginFirstRoute = '/ LoginFirst';
   static const String eulaRoute = '/EULA';
+  static const String landingRoute = '/landing';
+  static const String adminDashboardRoute = '/admin-dashboard';
+  static const String doctorSearchRoute = '/doctor-search';
+  static const String notificationTestRoute = '/notification-test';
 }
