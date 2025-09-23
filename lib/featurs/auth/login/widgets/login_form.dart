@@ -56,17 +56,55 @@ class LoginForm extends StatelessWidget {
               ),
               ConditionBuilder(
                 condition: state is LoginLoading,
-                ifFalse: CustomBotton(
-                    navigate_fun: () {
-                      if (loginFormKey.currentState!.validate()) {
-                        cubit.login(
-                          email: cubit.emailController.text,
-                          password: cubit.passController.text,
-                        );
-                      }
-                    },
-                    lable: config.localization['login'],
-                    fontSize: 20.sp),
+                ifFalse: Column(
+                  children: [
+                    CustomBotton(
+                        navigate_fun: () {
+                          if (loginFormKey.currentState!.validate()) {
+                            cubit.login(
+                              email: cubit.emailController.text,
+                              password: cubit.passController.text,
+                            );
+                          }
+                        },
+                        lable: config.localization['login'],
+                        fontSize: 20.sp),
+                    SizedBox(height: 15.h),
+                    // Demo Button
+                    Container(
+                      width: double.infinity,
+                      height: 50.h,
+                      margin: EdgeInsets.symmetric(horizontal: 20.w),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          cubit.demoLogin();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.orange,
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.r),
+                          ),
+                          elevation: 2,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.play_arrow, size: 20.w),
+                            SizedBox(width: 8.w),
+                            Text(
+                              'Demo Mode - Skip Login',
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               )
             ]));
       },

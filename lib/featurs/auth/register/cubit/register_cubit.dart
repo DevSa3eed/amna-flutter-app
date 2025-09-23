@@ -44,6 +44,22 @@ class RegisterCubit extends Cubit<RegisterState> {
     }
   }
 
+  //************* - Test Registration Function - *************\\
+  Future testRegister() async {
+    // Generate unique email and username for testing
+    String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
+    String testEmail = 'test_$timestamp@amna.com';
+    String testUsername = 'testuser_$timestamp';
+
+    await Register(
+      fullName: 'Test User $timestamp',
+      userName: testUsername,
+      Email: testEmail,
+      password: 'password123',
+      phoneNumber: '+971501234567',
+    );
+  }
+
   //************* - Register Function - *************\\
   AuthUser? userModel;
   Future Register({
@@ -55,15 +71,32 @@ class RegisterCubit extends Cubit<RegisterState> {
     // required File image,
   }) async {
     emit(RegisterLoading());
-    FormData formData = FormData.fromMap({
+
+    Map<String, dynamic> formDataMap = {
       "FullName": fullName,
       "Username": userName,
       "Email": Email,
       "Password": password,
       "Phonenumber": phoneNumber,
       "IsAdmin": false,
-      "ImageCover": await MultipartFile.fromFile(imageFile!.path),
-    });
+    };
+
+    // Only add image if one was selected
+    if (imageFile != null) {
+      formDataMap["ImageCover"] = await MultipartFile.fromFile(imageFile!.path);
+    }
+
+    FormData formData = FormData.fromMap(formDataMap);
+
+    // Debug: Log what we're sending
+    log('Registration Data:');
+    log('FullName: $fullName');
+    log('Username: $userName');
+    log('Email: $Email');
+    log('Phone: $phoneNumber');
+    log('IsAdmin: false');
+    log('Has Image: ${imageFile != null}');
+    log('API Endpoint: $baseUrl$registerEndPoint');
 
     await dio
         .post(
@@ -71,17 +104,58 @@ class RegisterCubit extends Cubit<RegisterState> {
       data: formData,
     )
         .then((value) {
+      log('Registration Response Status: ${value.statusCode}');
+      log('Registration Response Data: ${value.data}');
+
       if (value.statusCode == 200) {
         userModel = AuthUser.fromJson(value.data);
-        if (userModel!.isAuthenticated!) {
+        log('Parsed User Model:');
+        log('isAuthenticated: ${userModel!.isAuthenticated}');
+        log('message: ${userModel!.message}');
+        log('id: ${userModel!.id}');
+
+        // For registration, we consider it successful if we get a 200 response
+        // The backend might return isAuthenticated: false but still create the user
+        if (userModel!.message != null && userModel!.message!.isNotEmpty) {
           emit(RegisteSuccess(message: userModel!.message!));
         } else {
-          emit(RegisterFailed(message: userModel!.message!));
+          emit(RegisteSuccess(
+              message: 'Registration successful! Please login to continue.'));
+        }
+      } else {
+        // Handle different status codes
+        String errorMessage = 'Registration failed';
+        if (value.data != null && value.data is Map) {
+          errorMessage = value.data['message'] ?? 'Registration failed';
+        }
+        emit(RegisterFailed(message: errorMessage));
+      }
+    }).catchError((e) async {
+      log('Registration Error: ${e.toString()}');
+
+      String errorMessage = 'Registration failed. Please try again.';
+
+      // Check if it's a DioError to get more specific error info
+      if (e is DioException) {
+        log('Dio Error Type: ${e.type}');
+        log('Dio Error Response: ${e.response?.data}');
+        log('Dio Error Status Code: ${e.response?.statusCode}');
+
+        if (e.type == DioExceptionType.connectionError) {
+          // Connection error - backend is down
+          log('Backend is down, registration failed');
+          errorMessage =
+              'Unable to connect to server. Please check your internet connection and try again.';
+        } else if (e.response?.data != null && e.response?.data is Map) {
+          errorMessage = e.response!.data['message'] ?? errorMessage;
+        } else if (e.response?.statusCode == 400) {
+          errorMessage = 'Email or username already exists';
+        } else if (e.response?.statusCode == 500) {
+          errorMessage = 'Server error. Please try again later.';
         }
       }
-    }).catchError((e) {
-      log(e.toString());
-      emit(RegisterFailed(message: 'Email or UserName is already registered'));
+
+      emit(RegisterFailed(message: errorMessage));
     });
   }
 }

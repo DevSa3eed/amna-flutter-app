@@ -25,17 +25,27 @@ class AuthUser {
       this.refreshTokenExpiration});
 
   AuthUser.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    isAdmin = json['isAdmin'];
-    message = json['message'];
-    isAuthenticated = json['isAuthenticated'];
-    username = json['username'];
-    fullname = json['fullname'];
-    email = json['email'];
-    image = json['image'];
-    token = json['token'];
-    expiresOn = json['expiresOn'];
-    refreshTokenExpiration = json['refreshTokenExpiration'];
+    id = json['id']?.toString();
+    isAdmin = _parseBool(json['isAdmin']);
+    message = json['message']?.toString();
+    isAuthenticated = _parseBool(json['isAuthenticated']);
+    username = json['username']?.toString();
+    fullname = json['fullname']?.toString();
+    email = json['email']?.toString();
+    image = json['image']?.toString();
+    token = json['token']?.toString();
+    expiresOn = json['expiresOn']?.toString();
+    refreshTokenExpiration = json['refreshTokenExpiration']?.toString();
+  }
+
+  // Helper method to safely parse boolean values
+  bool? _parseBool(dynamic value) {
+    if (value == null) return null;
+    if (value is bool) return value;
+    if (value is String) {
+      return value.toLowerCase() == 'true';
+    }
+    return null;
   }
 
   Map<String, dynamic> toJson() {

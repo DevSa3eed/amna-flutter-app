@@ -32,3 +32,5 @@ final class DeleteProfileFailed extends userProfileState {
   String message;
   DeleteProfileFailed({required this.message});
 }
+
+final class LogOut extends userProfileState {}

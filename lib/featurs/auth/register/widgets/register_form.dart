@@ -71,6 +71,15 @@ class RegisterForm extends StatelessWidget {
               listener: (context, state) {
             if (state is RegisteSuccess) {
               showToast(content: state.message);
+              // Check if user is authenticated (auto-logged in)
+              if (state.message.contains('successful') &&
+                  !state.message.contains('login')) {
+                // User is auto-logged in, go to home
+                Navigator.pushReplacementNamed(context, Routes.homeRoute);
+              } else {
+                // User needs to login manually, go to login screen
+                Navigator.pushReplacementNamed(context, Routes.loginRoute);
+              }
             } else if (state is RegisterFailed) {
               showToast(content: state.message);
             }
@@ -82,17 +91,13 @@ class RegisterForm extends StatelessWidget {
                   navigate_fun: () {
                     if (registerKey.currentState!.validate()) {
                       // return config.localization['empty'];
-                      if (cubit.imageFile != null) {
-                        cubit.Register(
-                          fullName: fullNameController.text,
-                          userName: userNameController.text,
-                          Email: emailController.text,
-                          password: passController.text,
-                          phoneNumber: phoneController.text,
-                        );
-                      } else {
-                        showToast(content: 'please Select Photo');
-                      }
+                      cubit.Register(
+                        fullName: fullNameController.text,
+                        userName: userNameController.text,
+                        Email: emailController.text,
+                        password: passController.text,
+                        phoneNumber: phoneController.text,
+                      );
                     }
                   },
                   lable: config.localization['register'],

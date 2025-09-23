@@ -16,6 +16,58 @@ class LoginCubit extends Cubit<LoginState> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passController = TextEditingController();
 
+  //************************** Demo Login **************************\\
+  Future demoLogin() async {
+    emit(LoginLoading());
+
+    // Simulate API delay
+    await Future.delayed(const Duration(seconds: 1));
+
+    // Create mock user data
+    userModel = AuthUser(
+      id: '1',
+      isAdmin: false,
+      message: 'Demo login successful',
+      isAuthenticated: true,
+      username: 'demo_user',
+      fullname: 'Demo User',
+      email: 'demo@amna.com',
+      image: 'assets/images/account.png',
+      token: 'demo_token_123456789',
+      expiresOn: DateTime.now().add(const Duration(days: 30)).toIso8601String(),
+      refreshTokenExpiration:
+          DateTime.now().add(const Duration(days: 30)).toIso8601String(),
+    );
+
+    // Save mock data to cache
+    cacheHelper.SaveData(key: 'userID', value: userModel!.id!);
+    cacheHelper.SaveData(key: 'token', value: userModel!.token!);
+    cacheHelper.SaveData(key: 'isAdmin', value: userModel!.isAdmin!);
+    cacheHelper.SaveData(key: 'name', value: userModel!.fullname!);
+    cacheHelper.SaveData(key: 'email', value: userModel!.email!);
+    cacheHelper.SaveData(key: 'username', value: userModel!.username!);
+    cacheHelper.SaveData(key: 'image', value: userModel!.image!);
+
+    // Update global variables
+    userID = cacheHelper.getData('userID');
+    token = cacheHelper.getData('token');
+    isAdmin = cacheHelper.getData('isAdmin');
+    name = cacheHelper.getData('name');
+    userEmail = cacheHelper.getData('email');
+    username = cacheHelper.getData('username');
+    image = cacheHelper.getData('image');
+
+    debugPrint('/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/');
+    debugPrint('DEMO LOGIN SUCCESSFUL');
+    debugPrint('User ID: ${userModel!.id}');
+    debugPrint('Name: ${userModel!.fullname}');
+    debugPrint('Email: ${userModel!.email}');
+    debugPrint('/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/');
+
+    emit(LoginSuccessful(
+        message: 'Demo login successful! Welcome to Amna Telehealth'));
+  }
+
   //************************** Login **************************\\
   AuthUser? userModel;
   Future login({required String email, required String password}) async {

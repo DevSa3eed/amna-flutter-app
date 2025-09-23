@@ -95,6 +95,29 @@ class UserProfileCubit extends Cubit<userProfileState> {
     }
   }
 
+  //=============>>>>>>>>>> Logout User  <<<<<<<<<<<=============\\
+  void logOut() async {
+    Future.wait([
+      cacheHelper.removeData('isAdmin'),
+      cacheHelper.removeData('userID'),
+      cacheHelper.removeData('token'),
+      cacheHelper.removeData('name'),
+      cacheHelper.removeData('email'),
+      cacheHelper.removeData('image'),
+      cacheHelper.removeData('username'),
+      cacheHelper.removeData('phone'),
+    ]);
+    userID = null;
+    token = null;
+    isAdmin = false;
+    userEmail = null;
+    name = null;
+    image = null;
+    username = null;
+    phone = null;
+    emit(LogOut());
+  }
+
   //=============>>>>>>>>>> delete User  <<<<<<<<<<<=============\\
   Future deleteUser() async {
     emit(DeleteProfileLoading());
