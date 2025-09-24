@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../core/config/config.dart';
 import '../../../core/theme/Colors/coluors.dart';
 import '../../../core/theme/text_styles/text_styeles.dart';
 import '../cubit/doctor_search_cubit.dart';
@@ -39,7 +40,7 @@ class _DoctorSearchScreenState extends State<DoctorSearchScreen> {
       backgroundColor: Colours.White,
       appBar: AppBar(
         title: Text(
-          'Find Doctors',
+          config.localization['findDoctors'],
           style: TextStyles.lightBlue20blod,
         ),
         backgroundColor: Colours.White,
@@ -106,7 +107,7 @@ class _DoctorSearchScreenState extends State<DoctorSearchScreen> {
                         ),
                         SizedBox(height: 16.h),
                         Text(
-                          'Error loading doctors',
+                          config.localization['errorLoadingDoctors'],
                           style: TextStyles.black18blod,
                         ),
                         SizedBox(height: 8.h),
@@ -114,7 +115,7 @@ class _DoctorSearchScreenState extends State<DoctorSearchScreen> {
                           onPressed: () {
                             context.read<DoctorSearchCubit>().loadDoctors();
                           },
-                          child: const Text('Retry'),
+                          child: Text(config.localization['retry']),
                         ),
                       ],
                     ),
@@ -136,7 +137,7 @@ class _DoctorSearchScreenState extends State<DoctorSearchScreen> {
                             ),
                             SizedBox(height: 24.h),
                             Text(
-                              'No doctors found',
+                              config.localization['noDoctorsFound'],
                               style: TextStyles.black14blod,
                             ),
                             SizedBox(height: 12.h),
@@ -157,7 +158,8 @@ class _DoctorSearchScreenState extends State<DoctorSearchScreen> {
                                         .searchDoctors('');
                                   },
                                   icon: const Icon(Icons.clear),
-                                  label: const Text('Clear Search'),
+                                  label:
+                                      Text(config.localization['clearSearch']),
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Colours.LightBlue,
                                     foregroundColor: Colors.white,
@@ -172,7 +174,8 @@ class _DoctorSearchScreenState extends State<DoctorSearchScreen> {
                                     _searchController.clear();
                                   },
                                   icon: const Icon(Icons.filter_alt_off),
-                                  label: const Text('Clear Filters'),
+                                  label:
+                                      Text(config.localization['clearFilters']),
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Colours.DarkBlue,
                                     foregroundColor: Colors.white,
@@ -206,7 +209,7 @@ class _DoctorSearchScreenState extends State<DoctorSearchScreen> {
                                 _searchController.clear();
                               },
                               child: Text(
-                                'Clear filters',
+                                config.localization['clearFilters'],
                                 style: TextStyle(
                                   color: Colours.DarkBlue,
                                   fontSize: 14.sp,
@@ -251,36 +254,35 @@ class _DoctorSearchScreenState extends State<DoctorSearchScreen> {
   }
 
   void _showFilterBottomSheet() {
+    final cubit = context.read<DoctorSearchCubit>();
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => DoctorFilterBottomSheet(
-        currentFilters: context.read<DoctorSearchCubit>().currentFilters,
-        availableSpecialties:
-            context.read<DoctorSearchCubit>().getAvailableSpecialties(),
-        availableLocations:
-            context.read<DoctorSearchCubit>().getAvailableLocations(),
-        availableLanguages:
-            context.read<DoctorSearchCubit>().getAvailableLanguages(),
+      builder: (bottomSheetContext) => DoctorFilterBottomSheet(
+        currentFilters: cubit.currentFilters,
+        availableSpecialties: cubit.getAvailableSpecialties(),
+        availableLocations: cubit.getAvailableLocations(),
+        availableLanguages: cubit.getAvailableLanguages(),
         onApplyFilters: (filters) {
-          context.read<DoctorSearchCubit>().applyFilters(filters);
+          cubit.applyFilters(filters);
         },
       ),
     );
   }
 
   void _showSortBottomSheet() {
+    final cubit = context.read<DoctorSearchCubit>();
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
-      builder: (context) => SortBottomSheet(
+      builder: (bottomSheetContext) => SortBottomSheet(
         currentSortOption: _currentSortOption,
         onSortSelected: (sortOption) {
           setState(() {
             _currentSortOption = sortOption;
           });
-          context.read<DoctorSearchCubit>().sortDoctors(sortOption);
+          cubit.sortDoctors(sortOption);
         },
       ),
     );

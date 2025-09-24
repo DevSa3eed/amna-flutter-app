@@ -51,12 +51,12 @@
   "name": "الاسم",
   "position": "الوظيفة",
   "MEETING REQUEST": "********** Meeting Requset**********",
-  "requestMeeting": "طلب اجتماع",
+  "requestMeeting": "إنشاء اجتماع",
   "request": "طلب",
   "complaint": "الشكوي",
   "PROFILE": "********** Profile**********",
   "update": "تعديل",
-  "userequests": "طلبات الاستشارة",
+  "userequests": "الطلبات المستلمة",
   "adminrequset": "كل طلبات الاستشارة",
   "signout": "تسجيل الخروج",
   "MEETING": "********** Meeting **********",
@@ -84,5 +84,11 @@
   "on3": "خدمات طبية متكاملة",
   "ondes3": "خدمات طبية متكاملة من استشارات طبية إلى وصفات أدوية فعّالة، يوفر لك تطبيق عيادتي كل ما تحتاجه لإدارة صحتك بسهولة تامة.",
   "skip": "تخطي",
-  "aboutus": "معلومات عنا"
+  "aboutus": "معلومات عنا",
+  "findDoctors": "البحث عن الأطباء",
+  "errorLoadingDoctors": "خطأ في تحميل الأطباء",
+  "retry": "إعادة المحاولة",
+  "noDoctorsFound": "لم يتم العثور على أطباء",
+  "clearSearch": "مسح البحث",
+  "clearFilters": "مسح المرشحات"
 }

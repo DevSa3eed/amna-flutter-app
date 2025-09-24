@@ -18,7 +18,7 @@ class AllReuests extends StatelessWidget {
         backgroundColor: Colours.White,
         appBar: AppBar(
           title: Text(
-            config.localization['meeting request'],
+            config.localization['requestMeeting'],
             style: TextStyles.lightBlue20blod,
           ),
           bottom: TabBar(

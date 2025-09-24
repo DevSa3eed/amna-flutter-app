@@ -254,10 +254,10 @@ class CustomDrawer extends StatelessWidget {
             // Features Group - Only show if authenticated
             if (authService.isAuthenticated)
               NavigationGroup(
-                title: config.localization['features'],
+                title: null,
                 items: [
                   NavigationItem(
-                    label: 'Find Doctors',
+                    label: config.localization['findDoctors'],
                     icon: IconlyBold.search,
                     onTap: () async {
                       Navigator.pop(context); // Close drawer first

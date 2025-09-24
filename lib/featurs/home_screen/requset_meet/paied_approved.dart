@@ -81,7 +81,7 @@ class AprrovedRequst extends StatelessWidget {
 }
 //  appBar: AppBar(
 //                 title: Text(
-//                   config.localization['meeting request'],
+//                   config.localization['requestMeeting'],
 //                   style: TextStyles.lightBlue20blod,
 //                 ),
 //               ),

@@ -108,7 +108,7 @@ class RequestCard extends StatelessWidget {
                                     width: 20.w,
                                     height: 20.h,
                                     child: Center(child: customLoader()))
-                                : model.user!.imageCover == null
+                                : model.user?.imageCover == null
                                     ? Padding(
                                         padding: EdgeInsets.all(8.0.w),
                                         child: Image.asset(
@@ -125,7 +125,7 @@ class RequestCard extends StatelessWidget {
                                           height: 50.w,
                                           fit: BoxFit.cover,
                                           imageUrl:
-                                              '$imageUrl${model.user!.imageCover!}',
+                                              '$imageUrl${model.user?.imageCover ?? ''}',
                                           // placeholder: (context, url) =>
                                           //     const CircularProgressIndicator(), // While loading
                                           errorWidget: (context, url, error) =>
@@ -146,7 +146,7 @@ class RequestCard extends StatelessWidget {
                               children: [
                                 state is GetProfileLoading
                                     ? customLoader()
-                                    : model.user!.fullName != null
+                                    : model.user?.fullName != null
                                         ? Text(
                                             model.user!.fullName!,
                                             style: TextStyles.lightBlue16blod,
@@ -157,7 +157,7 @@ class RequestCard extends StatelessWidget {
                           ],
                         ),
                         Text(
-                          model.titel!,
+                          model.titel ?? 'No Title',
                           style: TextStyle(
                             color: Colours.LightBlue,
                             fontWeight: FontWeight.bold,
@@ -169,7 +169,7 @@ class RequestCard extends StatelessWidget {
                           height: 5.w,
                         ),
                         Text(
-                          model.description!,
+                          model.description ?? 'No Description',
                           style: TextStyle(
                             color: Colours.Black,
                             fontWeight: FontWeight.bold,
@@ -209,7 +209,8 @@ class RequestCard extends StatelessWidget {
                                                 text: 'Call',
                                                 fun: () {
                                                   cubit.makePhoneCall(
-                                                      model.user!.phoneNumber!);
+                                                      model.user?.phoneNumber ??
+                                                          '');
                                                 },
                                               ),
                                               SmallButton(
@@ -291,8 +292,9 @@ class RequestCard extends StatelessWidget {
                                                                   textController
                                                                       .text) *
                                                               inDollar!,
-                                                          phone: model.user!
-                                                              .phoneNumber!)
+                                                          phone: model.user
+                                                                  ?.phoneNumber ??
+                                                              '')
                                                       : showToast(
                                                           content:
                                                               'Enter The Price!!');
@@ -381,7 +383,8 @@ class RequestCard extends StatelessWidget {
                                                 'assets/icons/paypal.png',
                                                 width: 22.w,
                                               ),
-                                              text: 'Pay ${model.price} \$',
+                                              text:
+                                                  'Pay ${model.price ?? 0} \$',
                                               fun: () {
                                                 Navigator.of(context)
                                                     .push(MaterialPageRoute(
@@ -397,11 +400,11 @@ class RequestCard extends StatelessWidget {
                                                       {
                                                         "amount": {
                                                           "total":
-                                                              '${model.price}',
+                                                              '${model.price ?? 0}',
                                                           "currency": "USD",
                                                           "details": {
                                                             "subtotal":
-                                                                '${model.price}',
+                                                                '${model.price ?? 0}',
                                                             "shipping": '0',
                                                             "shipping_discount":
                                                                 0
@@ -415,7 +418,7 @@ class RequestCard extends StatelessWidget {
                                                               "name": "Apple",
                                                               "quantity": 1,
                                                               "price":
-                                                                  '${model.price}',
+                                                                  '${model.price ?? 0}',
                                                               "currency": "USD"
                                                             },
                                                           ],
@@ -433,11 +436,11 @@ class RequestCard extends StatelessWidget {
                                                               context,
                                                               Routes
                                                                   .userRequestsMeetRoute);
-                                                      cubit
-                                                          .updateRequestPaymentStatus(
-                                                              phone: model.user!
-                                                                  .phoneNumber!,
-                                                              id: model.id!);
+                                                      cubit.updateRequestPaymentStatus(
+                                                          phone: model.user
+                                                                  ?.phoneNumber ??
+                                                              '',
+                                                          id: model.id!);
 
                                                       // Send payment confirmation notification
                                                       try {
@@ -533,7 +536,7 @@ class RequestCard extends StatelessWidget {
                     inDollar == null
                         ? Container()
                         : Text(
-                            "${(model.price! / inDollar!).round()} AED = ${model.price.toString()} \$",
+                            "${((model.price ?? 0) / (inDollar ?? 1)).round()} AED = ${(model.price ?? 0).toString()} \$",
                             style: TextStyles.lightBlue16blod,
                           ),
                   ],

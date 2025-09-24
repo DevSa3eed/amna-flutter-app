@@ -5,3 +5,5 @@ String imageUrl = 'http://backend.amnatelehealth.com/';
 String getoneUser = 'Admin/GetOneUser';
 String bannerGetterUrl = 'Banner/GetAllBanner';
 String postBanner = 'Banner/AddBanner';
+String getAllDoctors = 'Doctors/GetAllDoctors';
+String getAllTeams = 'Team/GetAllTeams';

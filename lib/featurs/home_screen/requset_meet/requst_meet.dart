@@ -33,7 +33,7 @@ class RequstMeet extends StatelessWidget {
           return Scaffold(
             appBar: AppBar(
               title: Text(
-                config.localization['meeting request'],
+                config.localization['requestMeeting'],
                 style: TextStyles.lightBlue20blod,
               ),
             ),
